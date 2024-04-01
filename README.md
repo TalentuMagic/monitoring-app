@@ -59,5 +59,39 @@ minikube start
 ```bash
 helm repo add grafana https://grafana.github.io/helm-charts
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-helm repo add my-repo https://charts.bitnami.com/bitnami
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm repo update
+```
+### Install Apps using Helm
+Installing Grafana its own namespace:
+```bash
+helm install grafana-app grafana/grafana --namespace grafana
+```
+Installing Loki-Promtail Stack in the Grafana namespace:
+```bash
+helm install loki-promtail-stack-app grafana/loki-stack --namespace grafana
+```
+Installing Prometheus its own namespace:
+```bash
+helm install prometheus-app prometheus-community/prometheus --namespace prometheus
+```
+Installing Prometheus Node Exporter in the Prometheus namespace:
+```bash
+helm install prom-node-exporter prometheus-community/prometheus-node-exporter --namespace prometheus
+```
+Installing Prometheus Redis Exporter in the Prometheus namespace:
+```bash
+helm install prom-redis-exporter prometheus-community/prometheus-node-exporter --namespace prometheus
+```
+Installing Prometheus Systemd Exporter in the Prometheus namespace:
+```bash
+helm install prom-systemd-exporter prometheus-community/prometheus-systemd-exporter --namespace prometheus
+```
+Installing Prometheus Nginx Exporter in the Prometheus namespace:
+```bash
+helm install prom-nginx-exporter prometheus-community/prometheus-nginx-exporter --namespace prometheus
+```
+Installing Prometheus MySQL Exporter in the Prometheus namespace:
+```bash
+helm install prom-mysql-exporter prometheus-community/prometheus-mysql-exporter --namespace prometheus
 ```
