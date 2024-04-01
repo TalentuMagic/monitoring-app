@@ -9,10 +9,10 @@ echo "Done";
 
 # K9s kubectl helm minikube
 echo "Installing Kubernetes-CLI, MiniKube, Helm and K9s...";
-brew install kuberenetes-cli -y
-brew install minikube -y
-brew install helm -y 
-brew install k9s -y
+brew install kuberenetes-cli
+brew install minikube
+brew install helm
+brew install k9s
 echo "Done";
 echo 
 
