@@ -1,4 +1,4 @@
-#!bin/bash
+#!/bin/bash
 echo "Running the script to install and configure prerequisites for Monitoring Kubernetes Stack...";
 echo "Updating and Upgrading the system...";
 apt update && apt upgrade -y;
