@@ -14,5 +14,6 @@ $(. /etc/os-release && echo "$VERSION_CODENAME") stable" |   sudo tee /etc/apt/s
 apt update;
 apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y;
 groupadd docker && sudo usermod -aG docker $USER && newgrp docker;
+usermod -aG docker $USER && newgrp docker
 echo "Done";
 echo

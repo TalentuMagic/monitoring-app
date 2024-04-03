@@ -4,7 +4,7 @@ echo "Installing Homebrew...";
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" | echo
 (echo; echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"') >> /home/ubuntu/.bashrc
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-brew install gcc -y
+brew install gcc
 echo "Done";
 
 # K9s kubectl helm minikube
