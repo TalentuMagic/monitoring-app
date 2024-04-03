@@ -14,12 +14,8 @@ brew install kuberenetes-cli
 brew install minikube
 brew install helm
 brew install k9s
-echo "Done";
+echo "Done"
 echo 
-
-# starting minikube
-sudo usermod -aG docker $USER && newgrp docker;
-minikube start;
 
 # add Helm repos
 echo "Adding Helm Repos...";
