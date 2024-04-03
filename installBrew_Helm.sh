@@ -17,7 +17,8 @@ echo "Done";
 echo 
 
 # starting minikube
-minikube start
+sudo usermod -aG docker $USER && newgrp docker;
+minikube start;
 
 # add Helm repos
 echo "Adding Helm Repos...";
