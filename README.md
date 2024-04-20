@@ -52,33 +52,29 @@ eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 brew install gcc
 ```
 
-### Install & Start Minikube 
-```bash
-curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
-sudo install minikube-linux-amd64 /usr/local/bin/minikube && rm minikube-linux-amd64
-minikube start
-alias kubectl="minikube kubectl --"
-```
-
-### Install Kubernetes CLI, K9s, HELM 
+### Install Kubernetes CLI, K9s, HELM, Minikube
 ```bash
 brew install helm 
 brew install k9s
-```
-
-### Install Kubeapps
-```bash
-helm repo add bitnami https://charts.bitnami.com/bitnami
-kubectl create namespace kubeapps
-helm install kubeapps --namespace kubeapps bitnami/kubeapps
+brew install kubernetes-cli
+brew install minikube
+minikube start
 ```
 
 ### Add needed Helm Repos
 ```bash
 helm repo add grafana https://grafana.github.io/helm-charts
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo update
 ```
+
+### Install Kubeapps
+```bash
+kubectl create namespace kubeapps
+helm install kubeapps --namespace kubeapps bitnami/kubeapps
+```
+
 ### Install Apps using Helm
 Installing Grafana in its own namespace:
 ```bash
