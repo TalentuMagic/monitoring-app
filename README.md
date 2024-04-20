@@ -77,7 +77,6 @@ helm install kubeapps --namespace kubeapps bitnami/kubeapps
 ```bash
 helm repo add grafana https://grafana.github.io/helm-charts
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo update
 ```
 ### Install Apps using Helm
