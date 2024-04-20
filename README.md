@@ -36,7 +36,7 @@ echo \
 ```
 ```bash
 sudo apt-get update
-sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
 sudo groupadd docker
 sudo usermod -aG docker $USER
 newgrp docker
@@ -45,23 +45,32 @@ newgrp docker
 ### Install Homebrew
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
+```
+```bash
 (echo; echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"') >> $HOME/.bashrc
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 brew install gcc
 ```
 
-### Install Minikube, Kubernetes CLI, K9s, HELM 
+### Install & Start Minikube 
 ```bash
-brew install minikube
-brew install kuberenetes-cli
+curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+sudo install minikube-linux-amd64 /usr/local/bin/minikube && rm minikube-linux-amd64
+minikube start
+alias kubectl="minikube kubectl --"
+```
+
+### Install Kubernetes CLI, K9s, HELM 
+```bash
 brew install helm 
 brew install k9s
 ```
 
-### Start Minikube
+### Install Kubeapps
 ```bash
-minikube start
+helm repo add bitnami https://charts.bitnami.com/bitnami
+kubectl create namespace kubeapps
+helm install kubeapps --namespace kubeapps bitnami/kubeapps
 ```
 
 ### Add needed Helm Repos
@@ -72,15 +81,15 @@ helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo update
 ```
 ### Install Apps using Helm
-Installing Grafana its own namespace:
+Installing Grafana in its own namespace:
 ```bash
 helm install grafana-app grafana/grafana --namespace grafana
 ```
-Installing Loki-Promtail Stack in the Grafana namespace:
+Installing Loki-Promtail Stack in its own namespace:
 ```bash
 helm install loki-promtail-stack-app grafana/loki-stack --namespace grafana
 ```
-Installing Prometheus its own namespace:
+Installing Prometheus in its own namespace:
 ```bash
 helm install prometheus-app prometheus-community/prometheus --namespace prometheus
 ```
