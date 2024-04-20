@@ -74,7 +74,12 @@ helm repo update
 kubectl create namespace kubeapps
 helm install kubeapps --namespace kubeapps bitnami/kubeapps
 ```
-
+### Create Namespaces for the apps
+```bash
+kubectl create namespace prometheus
+kubectl create namespace loki-promtail
+kubectl create namespace grafana
+```
 ### Install Apps using Helm
 Installing Grafana in its own namespace:
 ```bash
