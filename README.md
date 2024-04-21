@@ -83,10 +83,10 @@ eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/<ssh-key-name>
 cat ~/.ssh/<ssh-key-name>
 ```
-```bash
 Guide to bootstrap Flux with Github
 https://fluxcd.io/flux/installation/bootstrap/github/
 Namely, I use the method below
+```bash
 flux bootstrap git \
   --url=ssh://git@github.com/<org>/<repository> \
   --branch=<my-branch> \
