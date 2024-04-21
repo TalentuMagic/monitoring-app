@@ -1,6 +1,6 @@
 
 # monitoring-app
-Bachelor's Thesis monitoring Kubernetes App using HELM, K9s, Grafana and Prometheus
+Bachelor's Thesis monitoring Kubernetes App using HELM, Flux, K9s, Grafana and Prometheus
 
 ## Installation
 
@@ -69,11 +69,32 @@ helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo update
 ```
 
-### Install Kubeapps
+### Installing & Configuring Flux CD
+Install Flux CLI
 ```bash
-kubectl create namespace kubeapps
-helm install kubeapps --namespace kubeapps bitnami/kubeapps
+brew install fluxcd/tap/flux
+. <(flux completion bash)
 ```
+Guide to add SSH key to Github account(s)
+https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent?platform=linux
+```bash
+ssh-keygen -t ed25519 -C "your_email@example.com"
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/<ssh-key-name>
+cat ~/.ssh/<ssh-key-name>
+```
+```bash
+Guide to bootstrap Flux with Github
+https://fluxcd.io/flux/installation/bootstrap/github/
+Namely, I use the method below
+flux bootstrap git \
+  --url=ssh://git@github.com/<org>/<repository> \
+  --branch=<my-branch> \
+  --private-key-file=<path/to/ssh/private.key> \
+  --password=<key-passphrase> \
+  --path=clusters/my-cluster
+```
+
 ### Create Namespaces for the apps
 ```bash
 kubectl create namespace prometheus
