@@ -10,13 +10,13 @@ Bachelor's Thesis monitoring Kubernetes App using HELM, Flux, K9s, Grafana and P
 15-30GB Storage \
 Linux-based OS - in my project I use Ubuntu 22.04 LTS
 
-### Update the system & Install essential DEV package
+### 1. Update the system & Install essential DEV package
 
 ```bash
 sudo apt update && sudo apt upgrade -y
 sudo apt install build-essential
 ```
-### Add Docker to the Package Manager & Install it
+### 2. Add Docker to the Package Manager & Install it
 Run each code block separately
 ```bash
 for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get remove $pkg; done
@@ -42,7 +42,7 @@ sudo usermod -aG docker $USER
 newgrp docker
 ```
 
-### Install Homebrew
+### 3. Install Homebrew
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
@@ -52,7 +52,7 @@ eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 brew install gcc
 ```
 
-### Install Kubernetes CLI, K9s, HELM, Minikube
+### 4. Install Kubernetes CLI, K9s, HELM, Minikube
 ```bash
 brew install helm 
 brew install k9s
@@ -61,7 +61,7 @@ brew install minikube
 minikube start
 ```
 
-### Add needed Helm Repos
+### 5. Add needed Helm Repos
 ```bash
 helm repo add grafana https://grafana.github.io/helm-charts
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
@@ -69,7 +69,7 @@ helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo update
 ```
 
-### Installing & Configuring Flux CD
+### 6. Installing & Configuring Flux CD
 Install Flux CLI
 ```bash
 brew install fluxcd/tap/flux
@@ -95,13 +95,13 @@ flux bootstrap git \
   --path=clusters/my-cluster
 ```
 
-### Create Namespaces for the apps
+### 7. Create Namespaces for the apps
 ```bash
 kubectl create namespace prometheus
 kubectl create namespace loki-promtail
 kubectl create namespace grafana
 ```
-### Install Apps using Helm
+### 8. Install Apps using Helm
 Installing Grafana in its own namespace:
 ```bash
 helm install grafana-app grafana/grafana --namespace grafana
