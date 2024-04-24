@@ -66,6 +66,7 @@ minikube start
 helm repo add grafana https://grafana.github.io/helm-charts
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo add bitnami https://charts.bitnami.com/bitnami
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 helm repo update
 ```
 
@@ -98,17 +99,14 @@ flux bootstrap git \
 ### 7. Create Namespaces for the apps
 ```bash
 kubectl create namespace prometheus
-kubectl create namespace loki-promtail
+kubectl create namespace prom-blackbox
 kubectl create namespace grafana
+kubectl create namespace nginx-ingress
 ```
-### 8. Install Apps using Helm
+### 8. Install Default Apps using Helm (optional/TEST only)
 Installing Grafana in its own namespace:
 ```bash
 helm install grafana-app grafana/grafana --namespace grafana
-```
-Installing Loki-Promtail Stack in its own namespace:
-```bash
-helm install loki-promtail-stack-app grafana/loki-stack --namespace grafana
 ```
 Installing Prometheus in its own namespace:
 ```bash
