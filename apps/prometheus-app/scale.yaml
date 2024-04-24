@@ -1,0 +1,33 @@
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: prometheus-app-hpa
+  namespace: prometheus
+spec:
+  maxReplicas: 3
+  minReplicas: 1
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: prometheus-app-server
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 80
+  # - type: Resource
+  #   resource:
+  #     name: memory
+  #     target:
+  #       type: Utilization
+  #       averageUtilization: 60
+  # - type: Pods
+  #   pods:
+  #     name: latency
+  #     metric:
+  #       name: prometheus_api_response_time_avg
+  #     target:
+  #       type: AverageValue
+  #       averageValue: 500
