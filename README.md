@@ -114,9 +114,7 @@ flux bootstrap git \
 
 ### 7. Create Namespaces for the apps
 ```bash
-kubectl create namespace prometheus
-kubectl create namespace prom-blackbox
-kubectl create namespace grafana
+kubectl create namespace prometheus-grafana
 kubectl create namespace nginx-ingress
 ```
 #### Example to Install Default Apps using Helm (optional/TEST only)
