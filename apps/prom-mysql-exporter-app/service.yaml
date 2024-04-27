@@ -22,4 +22,4 @@ spec:
       interval: 5m0s
   valuesFrom:
   - kind: ConfigMap
-    name: prom-mysql=exporter-app-values
+    name: prom-mysql-exporter-app-values
