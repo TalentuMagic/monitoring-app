@@ -41,7 +41,9 @@ sudo groupadd docker
 sudo usermod -aG docker $USER
 newgrp docker
 ```
-### 2.1 Make sure Docker has the proper MTU size in relation to the VM (preferrably MTU=1450)
+### 2.1 Make sure Docker has the proper MTU size in relation to the VM
+_The preferred MTU for most cases is 1450_
+Create the Docker daemon config file
 ```bash
 sudo nano ~/etc/docker/daemon.json
 ```
