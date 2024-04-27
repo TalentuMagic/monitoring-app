@@ -13,7 +13,7 @@ spec:
     disableWait: true
   chart:
     spec:
-      chart: blackbox-exporter
+      chart: prometheus-blackbox-exporter
       version: '8.16.0'
       sourceRef:
         kind: HelmRepository
