@@ -117,7 +117,7 @@ kubectl create namespace prom-blackbox
 kubectl create namespace grafana
 kubectl create namespace nginx-ingress
 ```
-### 8. Install Default Apps using Helm (optional/TEST only)
+#### Example to Install Default Apps using Helm (optional/TEST only)
 Installing Grafana in its own namespace:
 ```bash
 helm install grafana-app grafana/grafana --namespace grafana
