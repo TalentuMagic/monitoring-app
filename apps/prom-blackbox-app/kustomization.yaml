@@ -6,7 +6,7 @@ resources:
 
 configMapGenerator:
 - name: prom-blackbox-app-values
-  namespace: prom-blackbox
+  namespace: prometheus
   files:
     - values.yaml=prom-blackbox-app-values.yaml
 configurations:
