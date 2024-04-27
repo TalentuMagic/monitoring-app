@@ -75,6 +75,8 @@ brew install k9s
 brew install kubernetes-cli
 brew install minikube
 minikube start
+kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+minikube addons enable metrics-server
 ```
 
 ### 5. Add needed Helm Repos
