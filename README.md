@@ -41,6 +41,20 @@ sudo groupadd docker
 sudo usermod -aG docker $USER
 newgrp docker
 ```
+### 2.1 Make sure Docker has the proper MTU size in relation to the VM (preferrably MTU=1450)
+```bash
+sudo nano ~/etc/docker/daemon.json
+```
+Copy this to the file & save it
+```json
+{
+  "mtu":1450
+}
+```
+Restart Docker service
+```bash
+sudo systemctl restart docker
+```
 
 ### 3. Install Homebrew
 ```bash
