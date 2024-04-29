@@ -508,7 +508,7 @@ alertmanager:
     #   targetPort: 8082
 
     externalIPs: []
-    loadBalancerIP: "0.0.0.0"
+    loadBalancerIP: ""
     loadBalancerSourceRanges: []
 
     ## Denotes if this Service desires to route external traffic to node-local or cluster-wide endpoints
@@ -529,8 +529,7 @@ alertmanager:
 
     ## Service type
     ##
-    # type: ClusterIP
-    type: LoadBalancer
+    type: ClusterIP
 
   ## Configuration for creating a separate Service for each statefulset Alertmanager replica
   ##
