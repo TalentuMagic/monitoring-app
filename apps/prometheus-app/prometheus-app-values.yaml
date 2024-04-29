@@ -529,7 +529,8 @@ alertmanager:
 
     ## Service type
     ##
-    type: ClusterIP
+    # type: ClusterIP
+    type: LoadBalancer
 
   ## Configuration for creating a separate Service for each statefulset Alertmanager replica
   ##
