@@ -508,7 +508,7 @@ alertmanager:
     #   targetPort: 8082
 
     externalIPs: []
-    loadBalancerIP: ""
+    loadBalancerIP: "0.0.0.0"
     loadBalancerSourceRanges: []
 
     ## Denotes if this Service desires to route external traffic to node-local or cluster-wide endpoints
