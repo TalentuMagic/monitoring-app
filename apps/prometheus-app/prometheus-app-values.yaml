@@ -3732,7 +3732,18 @@ prometheus:
     ## Prometheus StorageSpec for persistent data
     ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/user-guides/storage.md
     ##
-    storageSpec: {}
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: prometheus-app-data
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 3Gi
+        selector:
+          matchLabels: 
+            app: prometheus-app
+    # storageSpec: {}
     ## Using PersistentVolumeClaim
     ##
     #  volumeClaimTemplate:

@@ -23,10 +23,3 @@ spec:
   valuesFrom:
   - kind: ConfigMap
     name: prometheus-app-values
-  volumes:
-    - name: prometheus-app
-      configMap:
-        name: prometheus-app
-    - name: prometheus-app-pvc
-      persistentVolumeClaim:
-        claimName: prometheus-app-data-pvc
