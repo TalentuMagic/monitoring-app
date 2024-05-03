@@ -202,7 +202,7 @@ priorityClassName: ""
 service:
   annotations: {}
   labels: {}
-  type: ClusterIP
+  type: NodePort
   port: 9115
   ipDualStack:
     enabled: false
