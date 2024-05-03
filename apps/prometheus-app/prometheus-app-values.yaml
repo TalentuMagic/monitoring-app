@@ -3779,7 +3779,7 @@ prometheus:
     ## The scrape configuration example below will find master nodes, provided they have the name .*mst.*, relabel the
     ## port to 2379 and allow etcd scraping provided it is running on all Kubernetes master nodes
     ##
-    additionalScrapeConfigs: []
+    # additionalScrapeConfigs: []
     # - job_name: kube-etcd
     #   kubernetes_sd_configs:
     #     - role: node
@@ -3820,6 +3820,29 @@ prometheus:
     #    {{end}}
     #    relabel_configs:
     #    ...
+    additionalScrapeConfigs:
+      - job_name: 'blackbox'
+        metrics_path: /probe
+        params:
+          module: [http_2xx]
+        static_configs:
+          - targets:
+            - http://blackbox_exporter:9115
+        relabel_configs:
+          - source_labels: [__address__]
+            target_label: __param_target
+          - source_labels: [__param_target]
+            target_label: instance
+          - target_label: __address__
+            replacement: blackbox_exporter:9115  # Address of the Blackbox exporter
+      - job_name: 'mysql'
+        static_configs:
+          - targets:
+            - mysql_exporter:9104  # Address of the MySQL exporter
+      - job_name: 'systemd'
+        static_configs:
+          - targets:
+            - systemd_exporter:9102  # Address of the Systemd exporter
 
 
     ## If additional scrape configurations are already deployed in a single secret file you can use this section.
