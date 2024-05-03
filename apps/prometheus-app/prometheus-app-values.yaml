@@ -1030,7 +1030,8 @@ grafana:
   #     - kubernetes.io/pvc-protection
   persistence:
     enabled: true
-    existingClaim: grafana-data-pvc
+    existingClaim: prometheus-app-grafana-pvc
+    subPath: grafana
 
   serviceAccount:
     create: true
@@ -3754,7 +3755,8 @@ prometheus:
             requests:
               storage: 2Gi
         metadata:
-          name: prometheus-data-pvc
+          name: prometheus-app-grafana-pvc
+    subPath: prometheus
 
     ## Using tmpfs volume
     ##
