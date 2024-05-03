@@ -1019,17 +1019,24 @@ grafana:
 
   # # To make Grafana persistent (Using Statefulset)
   # #
+  # persistence:
+  #   enabled: true
+  #   type: sts
+  #   storageClassName: "storageClassName"
+  #   accessModes:
+  #     - ReadWriteOnce
+  #   size: 20Gi
+  #   finalizers:
+  #     - kubernetes.io/pvc-protection
   persistence:
     enabled: true
-    storageClassName: prometheus-app-data
+    type: sts
+    storageClassName: grafana-data
     accessModes:
       - ReadWriteOnce
-    resources:
-        requests:
-          storage: 3Gi
-    selector:
-      matchLabels: 
-        app: prometheus-app
+    size: 1Gi
+    finalizers:
+      - kubernetes.io/pvc-protection
 
   serviceAccount:
     create: true
@@ -3734,17 +3741,6 @@ prometheus:
     ## Prometheus StorageSpec for persistent data
     ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/user-guides/storage.md
     ##
-    storageSpec:
-      volumeClaimTemplate:
-        spec:
-          storageClassName: prometheus-app-data
-          accessModes: ["ReadWriteOnce"]
-          resources:
-            requests:
-              storage: 3Gi
-        selector:
-          matchLabels: 
-            app: prometheus-app
     # storageSpec: {}
     ## Using PersistentVolumeClaim
     ##
@@ -3756,6 +3752,17 @@ prometheus:
     #        requests:
     #          storage: 50Gi
     #    selector: {}
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: prometheus-app-data
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 2Gi
+        selector:
+          matchLabels: 
+            app: prometheus-app
 
     ## Using tmpfs volume
     ##
