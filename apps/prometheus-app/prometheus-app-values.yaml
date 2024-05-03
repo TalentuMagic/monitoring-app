@@ -3838,11 +3838,11 @@ prometheus:
       - job_name: 'mysql'
         static_configs:
           - targets:
-            - prom-mysql-exporter-app-prometheus-mysql-exporter:9104  # Address of the MySQL exporter
+            - prom-mysql-exporter-app-prometheus-mysql-exporter:9558  # Address of the MySQL exporter
       - job_name: 'systemd'
         static_configs:
           - targets:
-            - prom-systemd-exporter-app-prometheus-systemd-exporter:9102  # Address of the Systemd exporter
+            - prom-systemd-exporter-app-prometheus-systemd-exporter:9558  # Address of the Systemd exporter
 
 
     ## If additional scrape configurations are already deployed in a single secret file you can use this section.
