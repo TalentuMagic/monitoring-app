@@ -1031,7 +1031,7 @@ grafana:
   persistence:
     enabled: true
     existingClaim: prometheus-app-grafana-pvc
-    subPath: grafana    
+    subPath: grafana
 
   serviceAccount:
     create: true
