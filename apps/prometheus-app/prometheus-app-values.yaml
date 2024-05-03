@@ -1024,7 +1024,12 @@ grafana:
     storageClassName: prometheus-app-data
     accessModes:
       - ReadWriteOnce
-    size: 3Gi
+    resources:
+        requests:
+          storage: 3Gi
+    selector:
+      matchLabels: 
+        app: prometheus-app
 
   serviceAccount:
     create: true
