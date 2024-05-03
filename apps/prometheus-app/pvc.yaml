@@ -1,0 +1,13 @@
+# Persistent Volume Claim for prometheus-app data
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: prometheus-app-data-pvc
+  labels:
+    app: prometheus-app
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 3Gi
