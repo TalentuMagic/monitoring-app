@@ -3753,7 +3753,7 @@ prometheus:
           accessModes: ["ReadWriteOnce"]
           resources:
             requests:
-              storage: 2Gi
+              storage: 3Gi
       metadata:
         name: prometheus-app-grafana-pvc
     subPath: prometheus
