@@ -1030,13 +1030,16 @@ grafana:
   #     - kubernetes.io/pvc-protection
   persistence:
     enabled: true
-    type: sts
-    storageClassName: grafana-data
+    storageClassName: prometheus-app-data
     accessModes:
       - ReadWriteOnce
-    size: 1Gi
-    finalizers:
-      - kubernetes.io/pvc-protection
+    resources:
+      requests:
+        storage: 2Gi
+    selector:
+      matchLabels: 
+        app: prometheus-app
+    
 
   serviceAccount:
     create: true
