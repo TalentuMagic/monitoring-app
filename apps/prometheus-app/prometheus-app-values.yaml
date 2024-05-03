@@ -1027,19 +1027,19 @@ grafana:
   #     - ReadWriteOnce
   #   size: 20Gi
   #   finalizers:
-  #     - kubernetes.io/pvc-protection
-  persistence:
-    enabled: true
-    storageClassName: prometheus-app-data
-    accessModes:
-      - ReadWriteOnce
-    resources:
-      requests:
-        storage: 2Gi
-    selector:
-      matchLabels: 
-        app: prometheus-app
-    
+  #     - kubernetes.io/pvc-protection  
+  grafanaSpec:
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: prometheus-app-data
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 2Gi
+        selector:
+          matchLabels: 
+            app: prometheus-app  
 
   serviceAccount:
     create: true
