@@ -3754,8 +3754,8 @@ prometheus:
           resources:
             requests:
               storage: 4Gi
-        metadata:
-          name: prometheus-app-grafana-pvc
+      metadata:
+        name: prometheus-app-grafana-pvc
     subPath: prometheus
 
     ## Using tmpfs volume
