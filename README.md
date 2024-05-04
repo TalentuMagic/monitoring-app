@@ -117,41 +117,16 @@ flux bootstrap git \
 
 ### 7. Create Namespaces for the apps
 ```bash
-kubectl create namespace prometheus-grafana
-kubectl create namespace nginx-ingress
+kubectl create namespace prometheus
 ```
 #### Example to Install Default Apps using Helm (optional/TEST only)
-Installing Grafana in its own namespace:
-```bash
-helm install grafana-app grafana/grafana --namespace grafana
-```
 Installing Prometheus in its own namespace:
 ```bash
 helm install prometheus-app prometheus-community/prometheus --namespace prometheus
 ```
-Installing Prometheus Node Exporter in the Prometheus namespace:
-```bash
-helm install prom-node-exporter prometheus-community/prometheus-node-exporter --namespace prometheus
-```
-Installing Prometheus Redis Exporter in the Prometheus namespace:
-```bash
-helm install prom-redis-exporter prometheus-community/prometheus-node-exporter --namespace prometheus
-```
-Installing Prometheus Systemd Exporter in the Prometheus namespace:
-```bash
-helm install prom-systemd-exporter prometheus-community/prometheus-systemd-exporter --namespace prometheus
-```
-Installing Prometheus Nginx Exporter in the Prometheus namespace:
-```bash
-helm install prom-nginx-exporter prometheus-community/prometheus-nginx-exporter --namespace prometheus
-```
-Installing Prometheus MySQL Exporter in the Prometheus namespace:
-```bash
-helm install prom-mysql-exporter prometheus-community/prometheus-mysql-exporter --namespace prometheus
-```
 ### 8. Create the directories for each app & config files
-## 8.1 For kubeEtcd, kubeScheduler, kubeControllerManager fix -> https://github.com/prometheus-community/helm-charts/issues/1966 ; https://github.com/prometheus-community/helm-charts/issues/1966#issuecomment-1093316897
-## 8.2 For each app create the following files in each folder:
+#### 8.1 For kubeEtcd, kubeScheduler, kubeControllerManager fix -> https://github.com/prometheus-community/helm-charts/issues/1966 ; https://github.com/prometheus-community/helm-charts/issues/1966#issuecomment-1093316897
+#### 8.2 For each app create the following files in each folder:
 - gitrepository.yaml
 - kustomization.yaml
 - kustomizeconfig.yaml
@@ -159,7 +134,7 @@ helm install prom-mysql-exporter prometheus-community/prometheus-mysql-exporter 
 - service.yaml
 # Optional / If persistence is needed
 - pvc.yaml
-### 8.x After creating the config files, run the following command to init each HelmRelease for each app
+### 8.3 After creating the config files, run the following command to init each HelmRelease for each app
 ```bash
 kubectl apply -k .
 ```
