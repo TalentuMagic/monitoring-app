@@ -173,7 +173,7 @@ mysql:
     # - connect-timeout=5
     # - debug
   pass: "admin"
-  port: 3306
+  port: 9104
   protocol: ""
   user: "exporter"
   # secret with full config my.cnf
