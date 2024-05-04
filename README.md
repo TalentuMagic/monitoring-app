@@ -270,7 +270,8 @@ CREATE USER 'exporter'@'localhost' IDENTIFIED BY 'admin' WITH MAX_USER_CONNECTIO
 GRANT PROCESS, REPLICATION CLIENT, SELECT ON *.* TO 'exporter'@'localhost';
 FLUSH PRIVILEGES;
 ```
-### 3.6.2 Run the MySQL Exporter in the background
+### 3.6 Run the MySQL Exporter
+#### 3.6.1 Run the MySQL Exporter in the background
 ```bash
 cd
 ./exporters/mysqld_exporter-0.15.1.linux-amd64/mysqld_exporter &
@@ -281,7 +282,7 @@ To kill the process, run the following commands
 pgrep mysqld_exporter
 kill -9 <PID>
 ```
-### 3.6.2 Run the MySQL Exporter as a service
+#### 3.6.2 Run the MySQL Exporter as a service
 Create the service config
 ```bash
 sudo nano /etc/systemd/system/mysqld-exporter
