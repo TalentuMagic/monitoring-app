@@ -3838,10 +3838,23 @@ prometheus:
             target_label: instance
           - target_label: __address__
             replacement: prom-blackbox-app-prometheus-blackbox-exporter:9115  # Address of the Blackbox exporter
-      - job_name: 'mysql'
+      - job_name: mysql # To get metrics about the mysql exporter’s targets
         static_configs:
           - targets:
-            - prom-mysql-exporter-app-prometheus-mysql-exporter:9104  # Address of the MySQL exporter
+            # All mysql hostnames or unix sockets to monitor.
+            - 10.9.3.63:3306
+        relabel_configs:
+          - source_labels: [__address__]
+            target_label: __param_target
+          - source_labels: [__param_target]
+            target_label: instance
+          - target_label: __address__
+            # The mysqld_exporter host:port
+            replacement: prom-mysql-exporter-app-prometheus-mysql-exporter:9104
+      # - job_name: 'mysql'
+      #   static_configs:
+      #     - targets:
+      #       - prom-mysql-exporter-app-prometheus-mysql-exporter:9104  # Address of the MySQL exporter
       - job_name: 'systemd'
         static_configs:
           - targets:
