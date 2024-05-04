@@ -1463,8 +1463,8 @@ kubeControllerManager:
     ## If null or unset, the value is determined dynamically based on target Kubernetes version due to change
     ## of default port in Kubernetes 1.22.
     ##
-    port: null
-    targetPort: null
+    port: 10257
+    targetPort: 10257
     ipDualStack:
       enabled: false
       ipFamilies: ["IPv6", "IPv4"]
@@ -1515,7 +1515,7 @@ kubeControllerManager:
     ## Requires proper certs (not self-signed) and delegated authentication/authorization checks.
     ## If null or unset, the value is determined dynamically based on target Kubernetes version.
     ##
-    https: null
+    https: true
 
     # Skip TLS certificate validation when scraping
     insecureSkipVerify: null
@@ -3845,29 +3845,6 @@ prometheus:
         static_configs:
           - targets:
             - prom-systemd-exporter-app-prometheus-systemd-exporter:9558  # Address of the Systemd exporter
-      # - job_name: kube-etcd
-      #   kubernetes_sd_configs:
-      #     - role: node
-      #   scheme: https
-      #   relabel_configs:
-      #   - action: labelmap
-      #     regex: __meta_kubernetes_node_label_(.+)
-      #   - source_labels: [__address__]
-      #     action: replace
-      #     targetLabel: __address__
-      #     regex: ([^:;]+):(\d+)
-      #     replacement: ${1}:2379
-      #   - source_labels: [__meta_kubernetes_node_name]
-      #     action: keep
-      #     regex: .*mst.*
-      #   - source_labels: [__meta_kubernetes_node_name]
-      #     action: replace
-      #     targetLabel: node
-      #     regex: (.*)
-      #     replacement: ${1}
-      #   metric_relabel_configs:
-      #   - regex: (kubernetes_io_hostname|failure_domain_beta_kubernetes_io_region|beta_kubernetes_io_os|beta_kubernetes_io_arch|beta_kubernetes_io_instance_type|failure_domain_beta_kubernetes_io_zone)
-      #     action: labeldrop
 
 
     ## If additional scrape configurations are already deployed in a single secret file you can use this section.
