@@ -175,7 +175,7 @@ mysql:
   pass: "admin"
   port: 3306
   protocol: ""
-  user: "user1"
+  user: "exporter"
   # secret with full config my.cnf
   existingConfigSecret:
     name: ""
