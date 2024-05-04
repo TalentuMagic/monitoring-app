@@ -8,12 +8,16 @@ Bachelor's Thesis monitoring Kubernetes App using HELM, Flux, K9s, Grafana and P
    2. [Add Docker to the Package Manager & Install it](#2-add-docker-to-the-package-manager--install-it)
 2. [Installation on Client VM side](#installation-on-client-vm-side)
 
-# If needed, create a SOCKS connection to the VM if its behind a firewall
+<br>
+
+### If needed, create a SOCKS connection to the VM if its behind a firewall
 ```ps
 ssh -D 1337 -q -C -N user@domain.com
 ```
 On Windows, go to `Internet Options` -> `Connections` -> `Lan Settings` and tick the `Proxy Server`.
 Click `Advanced` and in the `Socks` field add `localhost` to Proxy Address field and `1337` to Port field (if needed, untick `Use the same proxy server for all protocols`) and hit `OK`.
+
+<br>
 
 ## Installation on Cluster VM side
 
@@ -146,13 +150,15 @@ helm install prometheus-app prometheus-community/prometheus --namespace promethe
 - kustomizeconfig.yaml
 - <dir_name>-values.yaml
 - service.yaml
-# Optional / If persistence is needed
+#### Optional / If persistence is needed
 - pvc.yaml
 ### 8.3 After creating the config files, run the following command to init each HelmRelease for each app
 ```bash
 kubectl apply -k .
 ```
 e.g. _~/monitoring-app/apps/prometheus-app/$ kubectl apply -k ._
+
+<br>
 
 ## Installation on Client VM side
 ### Prerequisites & Requirements
