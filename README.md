@@ -271,6 +271,7 @@ GRANT PROCESS, REPLICATION CLIENT, SELECT ON *.* TO 'exporter'@'localhost';
 FLUSH PRIVILEGES;
 ```
 ### 3.6 Run the MySQL Exporter
+
 #### 3.6.1 Run the MySQL Exporter in the background
 ```bash
 cd
