@@ -138,6 +138,4 @@ helm install prometheus-app prometheus-community/prometheus --namespace promethe
 ```bash
 kubectl apply -k .
 ```
-e.g. ```bash
-~/monitoring-app/apps/prometheus-app/$ kubectl apply -k .
-```
+e.g. _~/monitoring-app/apps/prometheus-app/$ kubectl apply -k ._
