@@ -2,7 +2,13 @@
 # monitoring-app
 Bachelor's Thesis monitoring Kubernetes App using HELM, Flux, K9s, Grafana and Prometheus
 
-## Installation
+# Contents
+1. [Installation on Cluster VM side](#installation-on-cluster-vm-side)
+   1. [Update the system & Install essential DEV package](#1-update-the-system--install-essential-dev-package)
+   2. [Add Docker to the Package Manager & Install it](#2-add-docker-to-the-package-manager--install-it)
+2. [Installation on Client VM side](#installation-on-client-vm-side)
+
+## Installation on Cluster VM side
 
 ### Prerequisites & Requirements
 4-core CPU \
@@ -139,3 +145,170 @@ helm install prometheus-app prometheus-community/prometheus --namespace promethe
 kubectl apply -k .
 ```
 e.g. _~/monitoring-app/apps/prometheus-app/$ kubectl apply -k ._
+
+## Installation on Client VM side
+### Prerequisites & Requirements
+4-core CPU \
+4GB RAM \
+15-30GB Storage \
+Linux-based OS - in my project I use Ubuntu 22.04 LTS
+
+### 1. Update the system & Install essential DEV package
+
+```bash
+sudo apt update && sudo apt upgrade -y
+sudo apt install build-essential
+```
+### 2. Add Docker to the Package Manager & Install it
+Run each code block separately
+```bash
+for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get remove $pkg; done
+```
+```bash
+sudo apt-get update
+sudo apt-get install ca-certificates curl
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+```
+```bash
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+```
+```bash
+sudo apt-get update
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
+sudo groupadd docker
+sudo usermod -aG docker $USER
+newgrp docker
+```
+### 2.1 Make sure Docker has the proper MTU size in relation to the VM
+_The preferred MTU for most cases is 1450_
+Create the Docker daemon config file
+```bash
+sudo nano ~/etc/docker/daemon.json
+```
+Copy this to the file & save it
+```json
+{
+  "mtu":1450
+}
+```
+Restart Docker service
+```bash
+sudo systemctl restart docker
+```
+
+## 3. Install MySQL, Install & Configure MySQL Exporter to scrape data
+### 3.1 Create the following directories
+```bash
+mkdir containers archives exporters
+```
+### 3.2 Pull MySQL Exporter archive & Extract it (https://github.com/prometheus/mysqld_exporter/releases/)
+```bash
+wget -P ~/archives/ https://github.com/prometheus/mysqld_exporter/releases/download/v0.15.1/mysqld_exporter-0.15.1.linux-amd64.tar.gz
+tar xvfz ~/archives/mysqld_exporter-*.linux-amd64.tar.gz
+mv ~/archives/mysqld_exporter-0.15.1.linux-amd64/ ~/exporters
+```
+### 3.3 Create the config file for the MySQL Exporter & Run it
+```bash
+nano ~/exporters/mysqld_exporter-0.15.1.linux-amd64/.my.cnf
+```
+```config
+[client]
+user=exporter
+password=admin
+```
+Save and close the file
+### 3.4 Create the Docker compose file for the MySQL DB & Run it
+```bash
+cd ~/containers
+mkdir mysql
+cd mysql/
+nano compose.yaml
+```
+```yaml
+services:
+  db:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootadmin
+      MYSQL_DATABASE: clientDB
+      MYSQL_USER: user1
+      MYSQL_PASSWORD: admin
+    ports:
+      - 3306:3306
+    volumes:
+      - db-data:/var/lib/mysql
+volumes:
+  db-data:
+```
+Save the file and exit
+Run `docker-compose up -d` to start your MySQL DB container in detached-mode
+
+### 3.5 Create the "exporter" user for data scraping
+Open MySQL container shell
+```bash
+docker container ls
+```
+Copy the container hash
+Run the following command to enter the shell of the container
+```bash
+docker exec -it <container_hash> /bin/bash
+```
+When inside the container shell, run the following commands
+```bash
+mysql -u root -p
+```
+Enter the password you set earlier (e.g. rootadmin)
+Run the following SQL commands
+```sql
+CREATE USER 'exporter'@'localhost' IDENTIFIED BY 'admin' WITH MAX_USER_CONNECTIONS 3;
+GRANT PROCESS, REPLICATION CLIENT, SELECT ON *.* TO 'exporter'@'localhost';
+FLUSH PRIVILEGES;
+```
+### 3.6.2 Run the MySQL Exporter in the background
+```bash
+cd
+./exporters/mysqld_exporter-0.15.1.linux-amd64/mysqld_exporter &
+```
+You can use CTRL+C to exit the shell - the script will still run in the background
+To kill the process, run the following commands
+```bash
+pgrep mysqld_exporter
+kill -9 <PID>
+```
+### 3.6.2 Run the MySQL Exporter as a service
+Create the service config
+```bash
+sudo nano /etc/systemd/system/mysqld-exporter
+```
+Paste the following into the config file & Save it
+```config
+[Unit]
+Description=MySQL Exporter Service - scrapes MySQL DB data
+
+[Service]
+User=ubuntu
+WorkingDirectory=~/exporters/mysqld_exporter-0.15.1.linux-amd64/
+ExecStart=mysqld_exporter
+# optional items below
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
+```
+Reload daemons
+```bash
+sudo systemctl daemon-reload
+```
+Enable (autorun at OS startup) and start the service
+```bash
+sudo systemctl start mysqld-exporter
+sudo systemctl enable --now mysqld-exporter
+sudo systemctl status mysqld-exporter
+```
