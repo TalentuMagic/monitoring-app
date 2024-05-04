@@ -149,3 +149,20 @@ Installing Prometheus MySQL Exporter in the Prometheus namespace:
 ```bash
 helm install prom-mysql-exporter prometheus-community/prometheus-mysql-exporter --namespace prometheus
 ```
+### 8. Create the directories for each app & config files
+## 8.1 For kubeEtcd, kubeScheduler, kubeControllerManager fix -> https://github.com/prometheus-community/helm-charts/issues/1966 ; https://github.com/prometheus-community/helm-charts/issues/1966#issuecomment-1093316897
+## 8.2 For each app create the following files in each folder:
+- gitrepository.yaml
+- kustomization.yaml
+- kustomizeconfig.yaml
+- <dir_name>-values.yaml
+- service.yaml
+# Optional / If persistence is needed
+- pvc.yaml
+### 8.x After creating the config files, run the following command to init each HelmRelease for each app
+```bash
+kubectl apply -k .
+```
+e.g. ```bash
+~/monitoring-app/apps/prometheus-app/$ kubectl apply -k .
+```
