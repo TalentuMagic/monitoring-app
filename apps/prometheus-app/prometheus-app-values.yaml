@@ -3840,7 +3840,7 @@ prometheus:
       - job_name: 'mysql'
         static_configs:
           - targets:
-            - prom-mysql-exporter-app-prometheus-mysql-exporter:9558  # Address of the MySQL exporter
+            - prom-mysql-exporter-app-prometheus-mysql-exporter:9104  # Address of the MySQL exporter
       - job_name: 'systemd'
         static_configs:
           - targets:
