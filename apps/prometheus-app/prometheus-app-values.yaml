@@ -1463,8 +1463,8 @@ kubeControllerManager:
     ## If null or unset, the value is determined dynamically based on target Kubernetes version due to change
     ## of default port in Kubernetes 1.22.
     ##
-    port: 10252
-    targetPort: 10252
+    port: null
+    targetPort: null
     ipDualStack:
       enabled: false
       ipFamilies: ["IPv6", "IPv4"]
@@ -1843,8 +1843,8 @@ kubeScheduler:
     ## If null or unset, the value is determined dynamically based on target Kubernetes version due to change
     ## of default port in Kubernetes 1.23.
     ##
-    port: 10251
-    targetPort: 10251
+    port: null
+    targetPort: null
     ipDualStack:
       enabled: false
       ipFamilies: ["IPv6", "IPv4"]
