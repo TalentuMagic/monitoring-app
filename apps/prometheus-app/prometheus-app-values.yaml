@@ -3830,7 +3830,8 @@ prometheus:
           module: [http_2xx]
         static_configs:
           - targets:
-            - prom-blackbox-app-prometheus-blackbox-exporter:9115
+          # modify the targets to meet the following: 10.9.3.63:<API listener port>
+            - prom-blackbox-app-prometheus-blackbox-exporter:9115 # Address of the Blackbox exporter on host
         relabel_configs:
           - source_labels: [__address__]
             target_label: __param_target
@@ -3842,7 +3843,7 @@ prometheus:
         static_configs:
           - targets:
             # All mysql hostnames or unix sockets to monitor.
-            - 10.9.3.63:3306
+            - 10.9.3.63:3306 # Address of the MySQL exporter on host
         relabel_configs:
           - source_labels: [__address__]
             target_label: __param_target
@@ -3851,14 +3852,18 @@ prometheus:
           - target_label: __address__
             # The mysqld_exporter host:port
             replacement: prom-mysql-exporter-app-prometheus-mysql-exporter:9104
-      # - job_name: 'mysql'
-      #   static_configs:
-      #     - targets:
-      #       - prom-mysql-exporter-app-prometheus-mysql-exporter:9104  # Address of the MySQL exporter
       - job_name: 'systemd'
         static_configs:
           - targets:
-            - prom-systemd-exporter-app-prometheus-systemd-exporter:9558  # Address of the Systemd exporter
+          # modify the targets to meet the following: 10.9.3.63:<systemd exporter listener port>
+            - prom-systemd-exporter-app-prometheus-systemd-exporter:9558  # Address of the Systemd exporter on Host
+        relabel_configs:
+          - source_labels: [__address__]
+            target_label: __param_target
+          - source_labels: [__param_target]
+            target_label: instance
+          - target_label: __address__
+            replacement: prom-systemd-exporter-app-prometheus-systemd-exporter:9558  # Address of the Systemd exporter
 
     ## If additional scrape configurations are already deployed in a single secret file you can use this section.
     ## Expected values are the secret name and key
