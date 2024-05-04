@@ -25,7 +25,7 @@ service:
   labels: {}
   annotations: {}
   name: mysql-exporter
-  type: NodePort
+  type: ClusterIP
   externalPort: 9104
   internalPort: 9104
 
