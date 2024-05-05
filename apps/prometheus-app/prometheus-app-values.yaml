@@ -3843,7 +3843,7 @@ prometheus:
         static_configs:
           - targets:
             # All mysql hostnames or unix sockets to monitor.
-            - 10.9.3.63:3306 # Address of the MySQL exporter on host
+            - 10.9.3.63:9104 # Address of the MySQL exporter on host
         relabel_configs:
           - source_labels: [__address__]
             target_label: __param_target
