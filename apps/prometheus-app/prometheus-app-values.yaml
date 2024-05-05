@@ -3851,7 +3851,7 @@ prometheus:
             target_label: instance
           - target_label: __address__
             # The mysqld_exporter host:port
-            replacement: prom-mysql-exporter-app-prometheus-mysql-exporter:9104
+            # replacement: prom-mysql-exporter-app-prometheus-mysql-exporter:9104
       - job_name: 'systemd'
         static_configs:
           - targets:
