@@ -65,7 +65,7 @@ readinessProbe:
 
 prometheus:
   monitor:
-    enabled: true
+    enabled: false
     additionalLabels: {}
     namespace: ""
     interval: 30s
@@ -77,7 +77,7 @@ prometheus:
     endpoint: "/metrics"
 
 serviceMonitor:
-  enabled: false
+  enabled: true
   interval: 30s
   scrapeTimeout: 10s
   namespace: monitoring
