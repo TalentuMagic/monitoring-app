@@ -37,7 +37,7 @@ global:
 
 service:
   enabled: true
-  type: NodePort
+  type: ClusterIP
   port: 9558
   targetPort: 9558
   nodePort:
@@ -56,7 +56,7 @@ extraArgs: []
 
 prometheus:
   monitor:
-    enabled: true
+    enabled: false
     additionalLabels: {}
     relabelings: []
     metricRelabelings: []
