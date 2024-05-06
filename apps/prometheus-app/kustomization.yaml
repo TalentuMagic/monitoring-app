@@ -3,7 +3,7 @@ kind: Kustomization
 resources:
   - service.yaml
   - pvc.yaml
-  - gitrepository.yaml
+  # - gitrepository.yaml
   # - scale.yaml
 
 configMapGenerator:
