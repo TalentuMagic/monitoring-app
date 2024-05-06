@@ -3,8 +3,18 @@ kind: Kustomization
 resources:
   - service.yaml
   - pvc.yaml
-  - gitrepository.yaml
   # - scale.yaml
+  
+# config for automatic reconciliation
+spec:
+  interval: 1m
+  retryInterval: 30s
+  path: ./
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  validation: client
 
 configMapGenerator:
 - name: prometheus-app-values
