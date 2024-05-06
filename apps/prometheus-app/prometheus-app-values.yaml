@@ -3864,6 +3864,18 @@ prometheus:
             target_label: instance
           - target_label: __address__
             replacement: prom-systemd-exporter-app-prometheus-systemd-exporter:9558  # Address of the Systemd exporter
+      - job_name: 'statsd'
+        static_configs:
+          - targets:
+          # modify the targets to meet the following: 10.9.3.63:<statsd exporter listener port>
+            - prom-statsd-exporter-app-prometheus-statsd-exporter:9102  # Address of the Statsd exporter on Host
+        relabel_configs:
+          - source_labels: [__address__]
+            target_label: __param_target
+          - source_labels: [__param_target]
+            target_label: instance
+          - target_label: __address__
+            replacement: prom-statsd-exporter-app-prometheus-statsd-exporter:9102  # Address of the Systemd exporter
 
     ## If additional scrape configurations are already deployed in a single secret file you can use this section.
     ## Expected values are the secret name and key
