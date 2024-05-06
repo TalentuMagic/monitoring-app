@@ -15,7 +15,7 @@ metadata:
   name: prom-blackbox-app
   namespace: flux-system
 spec:
-  interval: 5m
+  interval: 3m0s
   retryInterval: 30s
   path: "./"
   prune: true
