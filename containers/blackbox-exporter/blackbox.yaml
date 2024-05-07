@@ -1,14 +1,32 @@
 modules:
-  http_2xx:
+  http_probe:
     prober: http
     timeout: 5s
     http:
-      valid_http_versions: [HTTP/1.1, HTTP/2]
-      valid_status_codes: []  # Defaults to 2xx
       method: GET
-  tcp_connect:
-    prober: tcp
+      valid_http_versions: [HTTP/1.1, HTTP/2]
+      fail_if_ssl: false
+  post_probe:
+    prober: http
     timeout: 5s
-  icmp:
-    prober: icmp
+    http:
+      method: POST
+      valid_http_versions: [HTTP/1.1, HTTP/2]
+      fail_if_ssl: false
+  put_probe:
+    prober: http
+    timeout: 5s
+    http:
+      method: PUT
+      valid_http_versions: [HTTP/1.1, HTTP/2]
+      fail_if_ssl: false
+  delete_probe:
+    prober: http
+    timeout: 5s
+    http:
+      method: DELETE
+      valid_http_versions: [HTTP/1.1, HTTP/2]
+      fail_if_ssl: false
+  tcp_probe:
+    prober: tcp
     timeout: 5s
