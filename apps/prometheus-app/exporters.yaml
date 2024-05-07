@@ -10,7 +10,7 @@ spec:
   type: ExternalName
   externalName: 10.9.3.63
   ports:
-    - name: mysql-metrics
+    - name: mysql-exporter-metrics
       protocol: TCP
       port: 9104
       targetPort: 9104
@@ -27,7 +27,7 @@ spec:
   type: ExternalName
   externalName: 10.9.3.63
   ports:
-    - name: blackbox-metrics
+    - name: blackbox-exporter-metrics
       protocol: TCP
       port: 9115
       targetPort: 9115

@@ -4088,7 +4088,27 @@ prometheus:
         matchNames:
           - prometheus
       endpoints:
-        - port: mysql-metrics
+        - port: mysql-exporter-metrics
+          interval: 10s
+    - name: "node-exporter"
+      selector:
+        matchLabels:
+          app: node-exporter
+      namespaceSelector:
+        matchNames:
+          - prometheus
+      endpoints:
+        - port: node-exporter-metrics
+          interval: 10s
+    - name: "nginx-exporter"
+      selector:
+        matchLabels:
+          app: nginx-exporter
+      namespaceSelector:
+        matchNames:
+          - prometheus
+      endpoints:
+        - port: nginx-exporter-metrics
           interval: 10s
   
   # additionalServiceMonitors: []
