@@ -3842,9 +3842,7 @@ prometheus:
             replacement: prom-blackbox-app-prometheus-blackbox-exporter:9115  # Address of the Blackbox exporter
       - job_name: mysql-exporter # To get metrics about the mysql exporter’s targets
         static_configs:
-          - targets:
-            # All mysql hostnames or unix sockets to monitor.
-            - 10.9.3.63:9104 # Address of the MySQL exporter on host
+          - targets: ["10.9.3.63:9104"] # Address of the MySQL exporter on host
             labels:
               environment: client_prod
         relabel_configs:
