@@ -3824,59 +3824,7 @@ prometheus:
     #    {{end}}
     #    relabel_configs:
     #    ...
-    additionalScrapeConfigs:
-      - job_name: 'blackbox'
-        metrics_path: /probe
-        params:
-          module: [http_2xx]
-        static_configs:
-          - targets:
-          # modify the targets to meet the following: 10.9.3.63:<API listener port>
-            - prom-blackbox-app-prometheus-blackbox-exporter:9115 # Address of the Blackbox exporter on host
-        relabel_configs:
-          - source_labels: [__address__]
-            target_label: __param_target
-          - source_labels: [__param_target]
-            target_label: instance
-          - target_label: __address__
-            replacement: prom-blackbox-app-prometheus-blackbox-exporter:9115  # Address of the Blackbox exporter
-      # - job_name: mysql-exporter # To get metrics about the mysql exporter’s targets
-      #   static_configs:
-      #     - targets: ["10.9.3.63:9104"] # Address of the MySQL exporter on host
-      #       labels:
-      #         environment: client_prod
-      #   relabel_configs:
-      #     - source_labels: [__address__]
-      #       target_label: __param_target
-      #     - source_labels: [__param_target]
-      #       target_label: instance
-      #     - target_label: __address__
-      #       replacement: mysqld-exporter:9104  # Address of the Blackbox exporter
-      - job_name: 'systemd'
-        static_configs:
-          - targets:
-          # modify the targets to meet the following: 10.9.3.63:<systemd exporter listener port>
-            - prom-systemd-exporter-app-prometheus-systemd-exporter:9558  # Address of the Systemd exporter on Host
-        relabel_configs:
-          - source_labels: [__address__]
-            target_label: __param_target
-          - source_labels: [__param_target]
-            target_label: instance
-          - target_label: __address__
-            replacement: prom-systemd-exporter-app-prometheus-systemd-exporter:9558  # Address of the Systemd exporter
-      - job_name: 'statsd'
-        static_configs:
-          - targets:
-          # modify the targets to meet the following: 10.9.3.63:<statsd exporter listener port>
-            - prom-statsd-exporter-app-prometheus-statsd-exporter:9102  # Address of the Statsd exporter on Host
-        relabel_configs:
-          - source_labels: [__address__]
-            target_label: __param_target
-          - source_labels: [__param_target]
-            target_label: instance
-          - target_label: __address__
-            replacement: prom-statsd-exporter-app-prometheus-statsd-exporter:9102  # Address of the Systemd exporter
-
+    
     ## If additional scrape configurations are already deployed in a single secret file you can use this section.
     ## Expected values are the secret name and key
     ## Cannot be used with additionalScrapeConfigs

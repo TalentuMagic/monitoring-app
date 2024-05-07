@@ -6,9 +6,9 @@ resources:
   # - scale.yaml
 
 configMapGenerator:
-- name: prom-statsd-exporter-app-values
+- name: prom-nginx-exporter-app-values
   namespace: prometheus
   files:
-    - values.yaml=prom-statsd-exporter-app-values.yaml
+    - values.yaml=prom-nginx-exporter-app-values.yaml
 configurations:
   - kustomizeconfig.yaml

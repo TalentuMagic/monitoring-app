@@ -1,7 +1,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: prom-statsd-exporter-app
+  name: prom-nginx-exporter-app
   namespace: prometheus
 spec:
   interval: 3m0s
@@ -13,8 +13,8 @@ spec:
     disableWait: true
   chart:
     spec:
-      chart: prometheus-statsd-exporter
-      version: '0.13.1'
+      chart: prometheus-nginx-exporter
+      version: '0.2.1'
       sourceRef:
         kind: HelmRepository
         name: prom-charts
@@ -22,4 +22,4 @@ spec:
       interval: 3m0s
   valuesFrom:
   - kind: ConfigMap
-    name: prom-statsd-exporter-app-values
+    name: prom-nginx-exporter-app-values
