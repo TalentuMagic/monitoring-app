@@ -48,3 +48,20 @@ spec:
       protocol: TCP
       port: 9100
       targetPort: 9100
+---
+# Client Nginx-Exporter Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-exporter
+  namespace: prometheus
+  labels:
+    app: nginx-exporter
+spec:
+  type: ExternalName
+  externalName: 10.9.3.63
+  ports:
+    - name: nginx-exporter-metrics
+      protocol: TCP
+      port: 9113
+      targetPort: 9113
