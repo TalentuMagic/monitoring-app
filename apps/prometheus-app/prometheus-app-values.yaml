@@ -4130,7 +4130,19 @@ prometheus:
   #      - nodes/proxy
   #    verbs: [ "get", "list", "watch" ]
 
-  additionalServiceMonitors: []
+  additionalServiceMonitors:
+    - name: "mysqld-exporter"
+      selector:
+        matchLabels:
+          app: mysqld-exporter
+      namespaceSelector:
+        matchNames:
+          - prometheus
+      endpoints:
+        - port: web
+          interval: 30s
+  
+  # additionalServiceMonitors: []
   ## Name of the ServiceMonitor to create
   ##
   # - name: ""
