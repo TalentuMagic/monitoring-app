@@ -4099,7 +4099,7 @@ prometheus:
           - prometheus
       endpoints:
         - port: node-exporter-metrics
-          interval: 10s
+          interval: 5s
     - name: "nginx-exporter"
       selector:
         matchLabels:
@@ -4109,7 +4109,7 @@ prometheus:
           - prometheus
       endpoints:
         - port: nginx-exporter-metrics
-          interval: 10s
+          interval: 30s
   
   # additionalServiceMonitors: []
   ## Name of the ServiceMonitor to create
