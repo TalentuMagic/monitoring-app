@@ -3547,7 +3547,7 @@ prometheus:
     ## prometheus resource to be created with selectors based on values in the helm deployment,
     ## which will also match the servicemonitors created
     ##
-    serviceMonitorSelectorNilUsesHelmValues: true
+    serviceMonitorSelectorNilUsesHelmValues: false
 
     ## ServiceMonitors to be selected for target discovery.
     ## If {}, select all ServiceMonitors
@@ -3840,18 +3840,18 @@ prometheus:
             target_label: instance
           - target_label: __address__
             replacement: prom-blackbox-app-prometheus-blackbox-exporter:9115  # Address of the Blackbox exporter
-      - job_name: mysql-exporter # To get metrics about the mysql exporter’s targets
-        static_configs:
-          - targets: ["10.9.3.63:9104"] # Address of the MySQL exporter on host
-            labels:
-              environment: client_prod
-        relabel_configs:
-          - source_labels: [__address__]
-            target_label: __param_target
-          - source_labels: [__param_target]
-            target_label: instance
-          - target_label: __address__
-            replacement: mysqld-exporter:9104  # Address of the Blackbox exporter
+      # - job_name: mysql-exporter # To get metrics about the mysql exporter’s targets
+      #   static_configs:
+      #     - targets: ["10.9.3.63:9104"] # Address of the MySQL exporter on host
+      #       labels:
+      #         environment: client_prod
+      #   relabel_configs:
+      #     - source_labels: [__address__]
+      #       target_label: __param_target
+      #     - source_labels: [__param_target]
+      #       target_label: instance
+      #     - target_label: __address__
+      #       replacement: mysqld-exporter:9104  # Address of the Blackbox exporter
       - job_name: 'systemd'
         static_configs:
           - targets:
@@ -4140,8 +4140,8 @@ prometheus:
         matchNames:
           - prometheus
       endpoints:
-        - port: web
-          interval: 30s
+        - port: mysql-metrics
+          interval: 10s
   
   # additionalServiceMonitors: []
   ## Name of the ServiceMonitor to create
