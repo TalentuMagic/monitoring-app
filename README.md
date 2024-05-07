@@ -171,6 +171,7 @@ kubectl apply -k .
 ```
 e.g. _~/monitoring-app/apps/prometheus-app/$ kubectl apply -k ._
 
+### 9. To import Grafana Dashboards -> https://grafana.com/grafana/dashboards/
 ---
 
 ## Installation on Client VM side
