@@ -1,0 +1,10 @@
+services:
+  blackbox-exporter:
+    image: prom/blackbox-exporter:latest
+    volumes:
+      - ./blackbox.yaml:/etc/blackbox_exporter/config.yml
+    command:
+      - '--config.file=/etc/blackbox_exporter/config.yml'
+    ports:
+      - 9115:9115
+    restart: unless-stopped
