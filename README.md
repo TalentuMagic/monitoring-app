@@ -97,6 +97,20 @@ kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/late
 minikube addons enable metrics-server
 kubectl config set-context --current --namespace=all
 ```
+#### 4.1 Configure Kubernetes Scheduler, Etcd, Controller to be accessible from any address (if in Prometheus Targets appear as down)
+##### For kubeEtcd, kubeScheduler, kubeControllerManager fix, for more explanations -> https://github.com/prometheus-community/helm-charts/issues/1966 ; https://github.com/prometheus-community/helm-charts/issues/1966#issuecomment-1093316897
+```bash
+minikube ssh
+cd /etc/kubernetes/manifests
+```
+Using vim, edit the following:
+`--listen-metrics-urls=http://127.0.0.1:2381`
+to
+`--listen-metrics-urls=http://0.0.0.0:2381`
+and below in the manifest file in the sections `livenessProbe` and `startupProbe` replace IP Address 127.0.0.1 to 0.0.0.0
+
+In kube-controller-manager.yaml manifest you should change IP 127.0.0.1 to 0.0.0.0 in `--bind-address` argument
+Also change this argument in the kube-scheduler.yaml manifest.
 
 ### 5. Add needed Helm Repos
 ```bash
@@ -143,7 +157,6 @@ Installing Prometheus in its own namespace:
 helm install prometheus-app prometheus-community/prometheus --namespace prometheus
 ```
 ### 8. Create the directories for each app & config files
-#### 8.1 For kubeEtcd, kubeScheduler, kubeControllerManager fix -> https://github.com/prometheus-community/helm-charts/issues/1966 ; https://github.com/prometheus-community/helm-charts/issues/1966#issuecomment-1093316897
 #### 8.2 For each app create the following files in each folder:
 - gitrepository.yaml
 - kustomization.yaml
