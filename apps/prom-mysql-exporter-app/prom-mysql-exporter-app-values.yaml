@@ -127,7 +127,24 @@ config: {}
   # logLevel: info
   # logFormat: "logger:stderr"
 
-collectors: {}
+# matching the collectors to the scraped metrics by the exporter on the client side
+collectors:
+  info_schema.innodb_metrics: true
+  auto_increment.columns: true
+  info_schema.processlist: true
+  binlog_size: true
+  info_schema.tablestats: true
+  global_variables: true
+  info_schema.query_response_time: true
+  info_schema.userstats: true
+  info_schema.tables: true
+  perf_schema.tablelocks: true
+  perf_schema.file_events: true
+  perf_schema.eventswaits: true
+  perf_schema.indexiowaits: true
+  perf_schema.tableiowaits: true
+  slave_status: true
+# collectors: {}
   # auto_increment.columns: false
   # binlog_size: false
   # engine_innodb_status: false
@@ -172,7 +189,7 @@ mysql:
   additionalConfig:
     # - connect-timeout=5
     # - debug
-  pass: "admin"
+  pass: "exporteradmin"
   port: 9104
   protocol: ""
   user: "exporter"
