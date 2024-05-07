@@ -1,0 +1,43 @@
+services:
+  db:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: clientDB
+      MYSQL_USER: user1
+      MYSQL_PASSWORD: admin
+    ports:
+      - 3306:3306
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./exporter.sql:/docker-entrypoint-initdb.d/exporter.sql
+
+  mysql-exporter:
+    image: prom/mysqld-exporter
+    command:
+      - "--config.my-cnf=/etc/mysql/mysql.conf.d/my.cnf"
+      - '--collect.info_schema.innodb_metrics'
+      - '--collect.auto_increment.columns'
+      - '--collect.info_schema.processlist'
+      - '--collect.binlog_size'
+      - '--collect.info_schema.tablestats'
+      - '--collect.global_variables'
+      - '--collect.info_schema.query_response_time'
+      - '--collect.info_schema.userstats'
+      - '--collect.info_schema.tables'
+      - '--collect.perf_schema.tablelocks'
+      - '--collect.perf_schema.file_events'
+      - '--collect.perf_schema.eventswaits'
+      - '--collect.perf_schema.indexiowaits'
+      - '--collect.perf_schema.tableiowaits'
+      - '--collect.slave_status'
+    volumes:
+      - ./my.cnf:/etc/mysql/mysql.conf.d/my.cnf:ro
+    ports:
+      - 9104:9104
+    depends_on:
+      - db
+
+volumes:
+  mysql-data:
