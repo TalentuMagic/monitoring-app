@@ -4113,7 +4113,7 @@ prometheus:
     - name: "blackbox-exporter-http-get"
         selector:
           matchLabels:
-            app: blackbox-exporter-http-get
+            app: blackbox-exporter
         namespaceSelector:
           matchNames:
             - prometheus
@@ -4130,30 +4130,30 @@ prometheus:
                 target_label: instance
               - target_label: __address__
                 replacement: 10.9.3.63:9115  # Address of the Blackbox Exporter
-      - name: "blackbox-exporter-http-post"
-        selector:
-          matchLabels:
-            app: blackbox-exporter-http-post
-        namespaceSelector:
-          matchNames:
-            - prometheus
-        endpoints:
-          - port: blackbox-exporter-metrics
-            interval: 1m
-            params:
-              module: [post_probe]
-            path: /probe
-            relabel_configs:
-              - source_labels: [__address__]
-                target_label: __param_target
-              - source_labels: [__param_target]
-                target_label: instance
-              - target_label: __address__
-                replacement: 10.9.3.63:9115  # Address of the Blackbox Exporter
+    - name: "blackbox-exporter-http-post"
+      selector:
+        matchLabels:
+          app: blackbox-exporter
+      namespaceSelector:
+        matchNames:
+          - prometheus
+      endpoints:
+        - port: blackbox-exporter-metrics
+          interval: 1m
+          params:
+            module: [post_probe]
+          path: /probe
+          relabel_configs:
+            - source_labels: [__address__]
+              target_label: __param_target
+            - source_labels: [__param_target]
+              target_label: instance
+            - target_label: __address__
+              replacement: 10.9.3.63:9115  # Address of the Blackbox Exporter
     - name: "blackbox-exporter-http-put"
         selector:
           matchLabels:
-            app: blackbox-exporter-http-put
+            app: blackbox-exporter
         namespaceSelector:
           matchNames:
             - prometheus
@@ -4173,7 +4173,7 @@ prometheus:
     - name: "blackbox-exporter-http-delete"
         selector:
           matchLabels:
-            app: blackbox-exporter-http-delete
+            app: blackbox-exporter
         namespaceSelector:
           matchNames:
             - prometheus
@@ -4193,7 +4193,7 @@ prometheus:
     - name: "blackbox-exporter-tcp"
         selector:
           matchLabels:
-            app: blackbox-exporter-tcp
+            app: blackbox-exporter
         namespaceSelector:
           matchNames:
             - prometheus

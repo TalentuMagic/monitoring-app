@@ -22,7 +22,7 @@ metadata:
   name: blackbox-exporter-http-get
   namespace: prometheus
   labels:
-    app: blackbox-exporter-http-get
+    app: blackbox-exporter
 spec:
   type: ExternalName
   externalName: 10.9.3.63
@@ -38,7 +38,7 @@ metadata:
   name: blackbox-exporter-http-post
   namespace: prometheus
   labels:
-    app: blackbox-exporter-http-post
+    app: blackbox-exporter
 spec:
   type: ExternalName
   externalName: 10.9.3.63
@@ -54,7 +54,7 @@ metadata:
   name: blackbox-exporter-http-put
   namespace: prometheus
   labels:
-    app: blackbox-exporter-http-put
+    app: blackbox-exporter
 spec:
   type: ExternalName
   externalName: 10.9.3.63
@@ -70,7 +70,7 @@ metadata:
   name: blackbox-exporter-http-delete
   namespace: prometheus
   labels:
-    app: blackbox-exporter-http-delete
+    app: blackbox-exporter
 spec:
   type: ExternalName
   externalName: 10.9.3.63
@@ -86,7 +86,7 @@ metadata:
   name: blackbox-exporter-tcp
   namespace: prometheus
   labels:
-    app: blackbox-exporter-tcp
+    app: blackbox-exporter
 spec:
   type: ExternalName
   externalName: 10.9.3.63
