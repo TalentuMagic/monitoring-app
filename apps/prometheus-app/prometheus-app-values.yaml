@@ -3851,7 +3851,7 @@ prometheus:
           - source_labels: [__param_target]
             target_label: instance
           - target_label: __address__
-            replacement: prom-mysql-exporter-app-prometheus-mysql-exporter:9104  # Address of the Blackbox exporter
+            replacement: mysqld-exporter:9104  # Address of the Blackbox exporter
       - job_name: 'systemd'
         static_configs:
           - targets:
