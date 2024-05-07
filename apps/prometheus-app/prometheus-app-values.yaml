@@ -4110,16 +4110,106 @@ prometheus:
       endpoints:
         - port: nginx-exporter-metrics
           interval: 30s
-    - name: "blackbox-exporter"
-      selector:
-        matchLabels:
-          app: blackbox-exporter
-      namespaceSelector:
-        matchNames:
-          - prometheus
-      endpoints:
-        - port: blackbox-exporter-metrics
-          interval: 1m
+    - name: "blackbox-exporter-http-get"
+        selector:
+          matchLabels:
+            app: blackbox-exporter
+        namespaceSelector:
+          matchNames:
+            - prometheus
+        endpoints:
+          - port: blackbox-exporter-metrics
+            interval: 1m
+            params:
+              module: [http_probe]
+            path: /probe
+            relabel_configs:
+              - source_labels: [__address__]
+                target_label: __param_target
+              - source_labels: [__param_target]
+                target_label: instance
+              - target_label: __address__
+                replacement: 10.9.3.63:9115  # Address of the Blackbox Exporter
+      - name: "blackbox-exporter-http-post"
+        selector:
+          matchLabels:
+            app: blackbox-exporter
+        namespaceSelector:
+          matchNames:
+            - prometheus
+        endpoints:
+          - port: blackbox-exporter-metrics
+            interval: 1m
+            params:
+              module: [post_probe]
+            path: /probe
+            relabel_configs:
+              - source_labels: [__address__]
+                target_label: __param_target
+              - source_labels: [__param_target]
+                target_label: instance
+              - target_label: __address__
+                replacement: 10.9.3.63:9115  # Address of the Blackbox Exporter
+    - name: "blackbox-exporter-http-put"
+        selector:
+          matchLabels:
+            app: blackbox-exporter
+        namespaceSelector:
+          matchNames:
+            - prometheus
+        endpoints:
+          - port: blackbox-exporter-metrics
+            interval: 1m
+            params:
+              module: [put_probe]
+            path: /probe
+            relabel_configs:
+              - source_labels: [__address__]
+                target_label: __param_target
+              - source_labels: [__param_target]
+                target_label: instance
+              - target_label: __address__
+                replacement: 10.9.3.63:9115  # Address of the Blackbox Exporter
+    - name: "blackbox-exporter-http-delete"
+        selector:
+          matchLabels:
+            app: blackbox-exporter
+        namespaceSelector:
+          matchNames:
+            - prometheus
+        endpoints:
+          - port: blackbox-exporter-metrics
+            interval: 1m
+            params:
+              module: [delete_probe]
+            path: /probe
+            relabel_configs:
+              - source_labels: [__address__]
+                target_label: __param_target
+              - source_labels: [__param_target]
+                target_label: instance
+              - target_label: __address__
+                replacement: 10.9.3.63:9115  # Address of the Blackbox Exporter
+    - name: "blackbox-exporter-tcp"
+        selector:
+          matchLabels:
+            app: blackbox-exporter
+        namespaceSelector:
+          matchNames:
+            - prometheus
+        endpoints:
+          - port: blackbox-exporter-metrics
+            interval: 1m
+            params:
+              module: [tcp_probe]
+            path: /probe
+            relabel_configs:
+              - source_labels: [__address__]
+                target_label: __param_target
+              - source_labels: [__param_target]
+                target_label: instance
+              - target_label: __address__
+                replacement: 10.9.3.63:9115  # Address of the Blackbox Exporter
   
   # additionalServiceMonitors: []
   ## Name of the ServiceMonitor to create
