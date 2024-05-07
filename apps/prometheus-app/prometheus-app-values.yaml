@@ -4110,6 +4110,16 @@ prometheus:
       endpoints:
         - port: nginx-exporter-metrics
           interval: 30s
+    - name: "blackbox-exporter"
+      selector:
+        matchLabels:
+          app: blackbox-exporter
+      namespaceSelector:
+        matchNames:
+          - prometheus
+      endpoints:
+        - port: blackbox-exporter-metrics
+          interval: 1m
   
   # additionalServiceMonitors: []
   ## Name of the ServiceMonitor to create
