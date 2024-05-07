@@ -4113,7 +4113,7 @@ prometheus:
     - name: "blackbox-exporter-http-get"
         selector:
           matchLabels:
-            app: blackbox-exporter
+            app: blackbox-exporter-http-get
         namespaceSelector:
           matchNames:
             - prometheus
@@ -4133,7 +4133,7 @@ prometheus:
       - name: "blackbox-exporter-http-post"
         selector:
           matchLabels:
-            app: blackbox-exporter
+            app: blackbox-exporter-http-post
         namespaceSelector:
           matchNames:
             - prometheus
@@ -4153,7 +4153,7 @@ prometheus:
     - name: "blackbox-exporter-http-put"
         selector:
           matchLabels:
-            app: blackbox-exporter
+            app: blackbox-exporter-http-put
         namespaceSelector:
           matchNames:
             - prometheus
@@ -4173,7 +4173,7 @@ prometheus:
     - name: "blackbox-exporter-http-delete"
         selector:
           matchLabels:
-            app: blackbox-exporter
+            app: blackbox-exporter-http-delete
         namespaceSelector:
           matchNames:
             - prometheus
@@ -4193,7 +4193,7 @@ prometheus:
     - name: "blackbox-exporter-tcp"
         selector:
           matchLabels:
-            app: blackbox-exporter
+            app: blackbox-exporter-tcp
         namespaceSelector:
           matchNames:
             - prometheus
