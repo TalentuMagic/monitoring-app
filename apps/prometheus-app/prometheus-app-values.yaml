@@ -4124,13 +4124,6 @@ prometheus:
             module: [http_2xx]
             target: ["node_app", "google.com"]
           path: /probe
-          relabel_configs:
-            - source_labels: [__address__]
-              target_label: __param_target
-            - source_labels: [__param_target]
-              target_label: instance
-            - target_label: __address__
-              replacement: 10.9.3.63:9115
     - name: "blackbox-exporter-http-get"
       selector:
         matchLabels:
