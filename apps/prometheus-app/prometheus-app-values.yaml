@@ -4122,9 +4122,7 @@ prometheus:
           interval: 1m
           params:
             module: [http_2xx]
-            target:
-              - node_app
-              - google.com
+            target: ["node_app", "google.com"]
           path: /probe
           relabel_configs:
             - source_labels: [__address__]
@@ -4145,8 +4143,7 @@ prometheus:
           interval: 1m
           params:
             module: [http_probe]
-            target:
-              - node_app
+            target: ["node_app"]
           path: /probe
     - name: "blackbox-exporter-http-post"
       selector:
@@ -4160,8 +4157,7 @@ prometheus:
           interval: 1m
           params:
             module: [post_probe]
-            target:
-              - node_app
+            target: ["node_app"]
           path: /probe
     - name: "blackbox-exporter-http-put"
       selector:
@@ -4175,8 +4171,7 @@ prometheus:
           interval: 1m
           params:
             module: [put_probe]
-            target:
-              - node_app
+            target: ["node_app"]
           path: /probe
     - name: "blackbox-exporter-http-delete"
       selector:
@@ -4190,8 +4185,7 @@ prometheus:
           interval: 1m
           params:
             module: [delete_probe]
-            target:
-              - node_app
+            target: ["node_app"]
           path: /probe
     - name: "blackbox-exporter-tcp"
       selector:
@@ -4205,10 +4199,7 @@ prometheus:
           interval: 1m
           params:
             module: [tcp_probe]
-            target:
-              - node_app:80
-              - node_app:443
-              - google.com:443
+            target: ["node_app:80","node_app:443","google.com:80","google.com:443"]
           path: /probe
   
   # additionalServiceMonitors: []
