@@ -12,117 +12,45 @@ subsets:
       port: 9104
       protocol: TCP
 ---
-# Client Blackbox-Exporter Service
+# Client Blackbox-Exporter Endpoint
 apiVersion: v1
-kind: Service
+kind: Endpoints
 metadata:
-  name: blackbox-exporter-http-get
+  name: blackbox-exporter
   namespace: prometheus
-  labels:
-    app: blackbox-exporter
-spec:
-  type: ExternalName
-  externalName: 10.9.3.63
+subsets:
+- addresses:
+    - ip: 10.9.3.63
   ports:
     - name: blackbox-exporter-metrics
-      protocol: TCP
       port: 9115
-      targetPort: 9115
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: blackbox-exporter-http-post
-  namespace: prometheus
-  labels:
-    app: blackbox-exporter
-spec:
-  type: ExternalName
-  externalName: 10.9.3.63
-  ports:
-    - name: blackbox-exporter-metrics
       protocol: TCP
-      port: 9115
-      targetPort: 9115
 ---
+# Client Node-Exporter Endpoint
 apiVersion: v1
-kind: Service
-metadata:
-  name: blackbox-exporter-http-put
-  namespace: prometheus
-  labels:
-    app: blackbox-exporter
-spec:
-  type: ExternalName
-  externalName: 10.9.3.63
-  ports:
-    - name: blackbox-exporter-metrics
-      protocol: TCP
-      port: 9115
-      targetPort: 9115
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: blackbox-exporter-http-delete
-  namespace: prometheus
-  labels:
-    app: blackbox-exporter
-spec:
-  type: ExternalName
-  externalName: 10.9.3.63
-  ports:
-    - name: blackbox-exporter-metrics
-      protocol: TCP
-      port: 9115
-      targetPort: 9115
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: blackbox-exporter-tcp
-  namespace: prometheus
-  labels:
-    app: blackbox-exporter
-spec:
-  type: ExternalName
-  externalName: 10.9.3.63
-  ports:
-    - name: blackbox-exporter-metrics
-      protocol: TCP
-      port: 9115
-      targetPort: 9115
----
-# Client Node-Exporter Service
-apiVersion: v1
-kind: Service
+kind: Endpoints
 metadata:
   name: node-exporter
   namespace: prometheus
-  labels:
-    app: node-exporter
-spec:
-  type: ExternalName
-  externalName: 10.9.3.63
+subsets:
+- addresses:
+    - ip: 10.9.3.63
   ports:
     - name: node-exporter-metrics
-      protocol: TCP
       port: 9100
-      targetPort: 9100
+      protocol: TCP
 ---
-# Client Nginx-Exporter Service
+# Client Nginx-Exporter Endpoint
 apiVersion: v1
-kind: Service
+kind: Endpoints
 metadata:
   name: nginx-exporter
   namespace: prometheus
-  labels:
-    app: nginx-exporter
-spec:
-  type: ExternalName
-  externalName: 10.9.3.63
+subsets:
+- addresses:
+    - ip: 10.9.3.63
   ports:
     - name: nginx-exporter-metrics
-      protocol: TCP
       port: 9113
-      targetPort: 9113
+      protocol: TCP
+---
