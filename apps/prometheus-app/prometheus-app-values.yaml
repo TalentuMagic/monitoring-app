@@ -4123,13 +4123,6 @@ prometheus:
           params:
             module: [http_probe]
           path: /probe
-          relabel_configs:
-            - source_labels: [__address__]
-              target_label: __param_target
-            - source_labels: [__param_target]
-              target_label: instance
-            - target_label: __address__
-              replacement: 10.9.3.63:9115  # Address of the Blackbox Exporter
     - name: "blackbox-exporter-http-post"
       selector:
         matchLabels:
@@ -4143,13 +4136,6 @@ prometheus:
           params:
             module: [post_probe]
           path: /probe
-          relabel_configs:
-            - source_labels: [__address__]
-              target_label: __param_target
-            - source_labels: [__param_target]
-              target_label: instance
-            - target_label: __address__
-              replacement: 10.9.3.63:9115  # Address of the Blackbox Exporter
     - name: "blackbox-exporter-http-put"
       selector:
         matchLabels:
@@ -4163,13 +4149,6 @@ prometheus:
           params:
             module: [put_probe]
           path: /probe
-          relabel_configs:
-            - source_labels: [__address__]
-              target_label: __param_target
-            - source_labels: [__param_target]
-              target_label: instance
-            - target_label: __address__
-              replacement: 10.9.3.63:9115  # Address of the Blackbox Exporter
     - name: "blackbox-exporter-http-delete"
       selector:
         matchLabels:
@@ -4183,13 +4162,6 @@ prometheus:
           params:
             module: [delete_probe]
           path: /probe
-          relabel_configs:
-            - source_labels: [__address__]
-              target_label: __param_target
-            - source_labels: [__param_target]
-              target_label: instance
-            - target_label: __address__
-              replacement: 10.9.3.63:9115  # Address of the Blackbox Exporter
     - name: "blackbox-exporter-tcp"
       selector:
         matchLabels:
@@ -4203,13 +4175,6 @@ prometheus:
           params:
             module: [tcp_probe]
           path: /probe
-          relabel_configs:
-            - source_labels: [__address__]
-              target_label: __param_target
-            - source_labels: [__param_target]
-              target_label: instance
-            - target_label: __address__
-              replacement: 10.9.3.63:9115  # Address of the Blackbox Exporter
   
   # additionalServiceMonitors: []
   ## Name of the ServiceMonitor to create
