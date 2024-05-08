@@ -4109,7 +4109,27 @@ prometheus:
           - prometheus
       endpoints:
         - port: nginx-exporter-metrics
-          interval: 30s
+          interval: 30s 
+    - name: "blackbox-exporter-http-2xx"
+      selector:
+        matchLabels:
+          app: blackbox-exporter
+      namespaceSelector:
+        matchNames:
+          - prometheus
+      endpoints:
+        - port: blackbox-exporter-metrics
+          interval: 1m
+          params:
+            module: [http_2xx]
+          path: /probe
+          relabel_configs:
+            - source_labels: [__address__]
+              target_label: __param_target
+            - source_labels: [__param_target]
+              target_label: instance
+            - target_label: __address__
+              replacement: 10.9.3.63:9115
     - name: "blackbox-exporter-http-get"
       selector:
         matchLabels:
