@@ -1,19 +1,16 @@
-# Client MySQL-Exporter Service
+# Client MySQL-Exporter Endpoints
 apiVersion: v1
-kind: Service
+kind: Endpoints
 metadata:
   name: mysqld-exporter
   namespace: prometheus
-  labels:
-    app: mysqld-exporter
-spec:
-  type: ExternalName
-  externalName: 10.9.3.63
+subsets:
+- addresses:
+    - ip: 10.9.3.63
   ports:
     - name: mysql-exporter-metrics
-      protocol: TCP
       port: 9104
-      targetPort: 9104
+      protocol: TCP
 ---
 # Client Blackbox-Exporter Service
 apiVersion: v1
