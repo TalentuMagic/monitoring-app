@@ -9,6 +9,8 @@ services:
     depends_on:
       - node_app
     restart: unless-stopped
+    networks:
+      nginx_exporter_net:
 
   node_app:
     image: node:latest
@@ -20,14 +22,26 @@ services:
     expose:
       - 3000
     restart: unless-stopped
+    networks:
+      nginx_exporter_net:
 
   nginx_prometheus_exporter:
     image: nginx/nginx-prometheus-exporter:latest
     container_name: nginx_prometheus_exporter
     command:
-      - '--nginx.scrape-uri=http://nginx:8080/stub_status'
+      - '--nginx.scrape-uri=http://nginx:80/stub_status'
     ports:
       - 9113:9113
     depends_on:
       - nginx
     restart: unless-stopped
+    networks:
+      nginx_exporter_net:
+        ipv4_address: 172.28.1.4
+networks:
+  nginx_exporter_net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.28.0.0/16
