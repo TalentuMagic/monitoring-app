@@ -3837,14 +3837,6 @@ prometheus:
         scrape_interval: 10s
         static_configs:
           - targets: ['10.9.3.63:9104']
-      - job_name: 'blackbox-exporter-http-2xx'
-        metrics_path: '/probe'
-        scrape_interval: 1m
-        params:
-          module: ['http_2xx']
-          target: ['node_app']
-        static_configs:
-          - targets: ['10.9.3.63:9115']
       - job_name: 'node-exporter'
         metrics_path: '/metrics'
         scrape_interval: 5s
@@ -3855,6 +3847,54 @@ prometheus:
         scrape_interval: 30s
         static_configs:
           - targets: ['10.9.3.63:9113']
+      - job_name: 'blackbox-exporter-http-2xx'
+        metrics_path: '/probe'
+        scrape_interval: 1m
+        params:
+          module: ['http_2xx']
+          target: ['node_app','google.com']
+        static_configs:
+          - targets: ['10.9.3.63:9115']
+      - job_name: 'blackbox-exporter-http-get'
+        metrics_path: '/probe'
+        scrape_interval: 1m
+        params:
+          module: ['http_probe']
+          target: ['node_app']
+        static_configs:
+          - targets: ['10.9.3.63:9115']
+      - job_name: 'blackbox-exporter-http-post'
+        metrics_path: '/probe'
+        scrape_interval: 1m
+        params:
+          module: ['post_probe']
+          target: ['node_app']
+        static_configs:
+          - targets: ['10.9.3.63:9115']
+      - job_name: 'blackbox-exporter-http-put'
+        metrics_path: '/probe'
+        scrape_interval: 1m
+        params:
+          module: ['put_probe']
+          target: ['node_app']
+        static_configs:
+          - targets: ['10.9.3.63:9115']
+      - job_name: 'blackbox-exporter-http-delete'
+        metrics_path: '/probe'
+        scrape_interval: 1m
+        params:
+          module: ['delete_probe']
+          target: ['node_app']
+        static_configs:
+          - targets: ['10.9.3.63:9115']
+      - job_name: 'blackbox-exporter-tcp'
+        metrics_path: '/probe'
+        scrape_interval: 1m
+        params:
+          module: ['tcp_probe']
+          target: ['node_app:80','node_app:443','google.com:80','google.com:443']
+        static_configs:
+          - targets: ['10.9.3.63:9115']
 
 
     ## If additional scrape configurations are already deployed in a single secret file you can use this section.
