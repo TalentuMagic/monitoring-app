@@ -3566,14 +3566,11 @@ prometheus:
 
     ## Namespaces to be selected for ServiceMonitor discovery.
     ##
-    # serviceMonitorNamespaceSelector: {}
+    serviceMonitorNamespaceSelector: {}
     ## Example which selects ServiceMonitors in namespaces with label "prometheus" set to "somelabel"
     # serviceMonitorNamespaceSelector:
     #   matchLabels:
     #     prometheus: somelabel
-    serviceMonitorNamespaceSelector:
-      matchNames:
-        - prometheus
     
 
     ## If true, a nil or {} value for prometheus.prometheusSpec.podMonitorSelector will cause the
