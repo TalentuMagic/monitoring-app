@@ -215,6 +215,7 @@ server {
 ```
 Save and close the file. Run this command afterwards `sudo ln -s /etc/nginx/sites-available/prometheus /etc/nginx/sites-enabled/`
 Restart the NGINX server using `sudo systemctl restart nginx`
+
 ---
 
 ## Installation on Client VM side
