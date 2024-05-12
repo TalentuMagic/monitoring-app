@@ -172,6 +172,49 @@ kubectl apply -k .
 e.g. _~/monitoring-app/apps/prometheus-app/$ kubectl apply -k ._
 
 ### 9. To import Grafana Dashboards -> https://grafana.com/grafana/dashboards/
+### 10. To access the apps from the browser, I use an NGINX Load-Balancer
+Install NGINX
+```bash
+sudo apt install nginx
+```
+Configure NGINX server for Grafana pod at the path using the following command `sudo nano /etc/nginx/sites-available/grafana` and the configuration below:
+```nginx
+server {
+    listen 3000;
+
+    location / {
+        proxy_set_header Host 192.168.49.2:30443;
+        proxy_set_header Origin http://192.168.49.2:30443;
+        proxy_pass http://192.168.49.2:30443;
+    }
+}
+```
+Save and close the file. Run this command afterwards `sudo ln -s /etc/nginx/sites-available/grafana /etc/nginx/sites-enabled/`
+Do the same for Prometheus `sudo nano /etc/nginx/sites-available/prometheus`
+```nginx
+# Prometheus Server
+server {
+    listen 9090;
+
+    location / {
+        proxy_set_header Host 192.168.49.2:30090;
+        proxy_set_header Origin http://192.168.49.2:30090;
+        proxy_pass http://192.168.49.2:30090;
+    }
+}
+# Prometheus AlertManager
+server {
+    listen 9093;
+
+    location / {
+        proxy_set_header Host 192.168.49.2:30903;
+        proxy_set_header Origin http://192.168.49.2:30903;
+        proxy_pass http://192.168.49.2:30903;
+    }
+}
+```
+Save and close the file. Run this command afterwards `sudo ln -s /etc/nginx/sites-available/prometheus /etc/nginx/sites-enabled/`
+Restart the NGINX server using `sudo systemctl restart nginx`
 ---
 
 ## Installation on Client VM side
