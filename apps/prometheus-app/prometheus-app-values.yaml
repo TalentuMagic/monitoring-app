@@ -4117,90 +4117,90 @@ prometheus:
       endpoints:
         - port: nginx-exporter-metrics
           interval: 30s 
-    - name: "blackbox-exporter-http-2xx"
-      selector:
-        matchLabels:
-          app: blackbox-exporter
-      namespaceSelector:
-        matchNames:
-          - prometheus
-      endpoints:
-        - port: blackbox-exporter-metrics
-          interval: 1m
-          params:
-            module: [http_2xx]
-            target: ["node_app", "google.com"]
-          path: /probe
-    - name: "blackbox-exporter-http-get"
-      selector:
-        matchLabels:
-          app: blackbox-exporter
-      namespaceSelector:
-        matchNames:
-          - prometheus
-      endpoints:
-        - port: blackbox-exporter-metrics
-          interval: 1m
-          params:
-            module: [http_probe]
-            target: ["node_app"]
-          path: /probe
-    - name: "blackbox-exporter-http-post"
-      selector:
-        matchLabels:
-          app: blackbox-exporter
-      namespaceSelector:
-        matchNames:
-          - prometheus
-      endpoints:
-        - port: blackbox-exporter-metrics
-          interval: 1m
-          params:
-            module: [post_probe]
-            target: ["node_app"]
-          path: /probe
-    - name: "blackbox-exporter-http-put"
-      selector:
-        matchLabels:
-          app: blackbox-exporter
-      namespaceSelector:
-        matchNames:
-          - prometheus
-      endpoints:
-        - port: blackbox-exporter-metrics
-          interval: 1m
-          params:
-            module: [put_probe]
-            target: ["node_app"]
-          path: /probe
-    - name: "blackbox-exporter-http-delete"
-      selector:
-        matchLabels:
-          app: blackbox-exporter
-      namespaceSelector:
-        matchNames:
-          - prometheus
-      endpoints:
-        - port: blackbox-exporter-metrics
-          interval: 1m
-          params:
-            module: [delete_probe]
-            target: ["node_app"]
-          path: /probe
-    - name: "blackbox-exporter-tcp"
-      selector:
-        matchLabels:
-          app: blackbox-exporter
-      namespaceSelector:
-        matchNames:
-          - prometheus
-      endpoints:
-        - port: blackbox-exporter-metrics
-          interval: 1m
-          params:
-            module: [tcp_probe]
-            target: ["node_app:80","node_app:443","google.com:80","google.com:443"]
-          path: /probe
+    # - name: "blackbox-exporter-http-2xx"
+    #   selector:
+    #     matchLabels:
+    #       app: blackbox-exporter
+    #   namespaceSelector:
+    #     matchNames:
+    #       - prometheus
+    #   endpoints:
+    #     - port: blackbox-exporter-metrics
+    #       interval: 1m
+    #       params:
+    #         module: [http_2xx]
+    #         target: ["node_app", "google.com"]
+    #       path: /probe
+    # - name: "blackbox-exporter-http-get"
+    #   selector:
+    #     matchLabels:
+    #       app: blackbox-exporter
+    #   namespaceSelector:
+    #     matchNames:
+    #       - prometheus
+    #   endpoints:
+    #     - port: blackbox-exporter-metrics
+    #       interval: 1m
+    #       params:
+    #         module: [http_probe]
+    #         target: ["node_app"]
+    #       path: /probe
+    # - name: "blackbox-exporter-http-post"
+    #   selector:
+    #     matchLabels:
+    #       app: blackbox-exporter
+    #   namespaceSelector:
+    #     matchNames:
+    #       - prometheus
+    #   endpoints:
+    #     - port: blackbox-exporter-metrics
+    #       interval: 1m
+    #       params:
+    #         module: [post_probe]
+    #         target: ["node_app"]
+    #       path: /probe
+    # - name: "blackbox-exporter-http-put"
+    #   selector:
+    #     matchLabels:
+    #       app: blackbox-exporter
+    #   namespaceSelector:
+    #     matchNames:
+    #       - prometheus
+    #   endpoints:
+    #     - port: blackbox-exporter-metrics
+    #       interval: 1m
+    #       params:
+    #         module: [put_probe]
+    #         target: ["node_app"]
+    #       path: /probe
+    # - name: "blackbox-exporter-http-delete"
+    #   selector:
+    #     matchLabels:
+    #       app: blackbox-exporter
+    #   namespaceSelector:
+    #     matchNames:
+    #       - prometheus
+    #   endpoints:
+    #     - port: blackbox-exporter-metrics
+    #       interval: 1m
+    #       params:
+    #         module: [delete_probe]
+    #         target: ["node_app"]
+    #       path: /probe
+    # - name: "blackbox-exporter-tcp"
+    #   selector:
+    #     matchLabels:
+    #       app: blackbox-exporter
+    #   namespaceSelector:
+    #     matchNames:
+    #       - prometheus
+    #   endpoints:
+    #     - port: blackbox-exporter-metrics
+    #       interval: 1m
+    #       params:
+    #         module: [tcp_probe]
+    #         target: ["node_app:80","node_app:443","google.com:80","google.com:443"]
+    #       path: /probe
   
   # additionalServiceMonitors: []
   ## Name of the ServiceMonitor to create
