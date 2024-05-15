@@ -2238,6 +2238,8 @@ prometheusOperator:
     #   argocd.argoproj.io/hook-delete-policy: HookSucceeded
 
     namespaceSelector: {}
+    objectSelector: {}
+
 
     deployment:
       enabled: false
@@ -3571,7 +3573,6 @@ prometheus:
     # serviceMonitorNamespaceSelector:
     #   matchLabels:
     #     prometheus: somelabel
-    
 
     ## If true, a nil or {} value for prometheus.prometheusSpec.podMonitorSelector will cause the
     ## prometheus resource to be created with selectors based on values in the helm deployment,
