@@ -86,14 +86,19 @@ eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 brew install gcc
 ```
 
-### 4. Install Kubernetes CLI, K9s, HELM, Minikube
+### 4. Install Kubernetes CLI, K9s, HELM, Minikube & configure Minikube storage
 ```bash
 brew install helm 
 brew install k9s
 brew install kubernetes-cli
 brew install minikube
 minikube start --bootstrapper=kubeadm --extra-config=scheduler.bind-address=0.0.0.0 --extra-config=controller-manager.bind-address=0.0.0.0 --extra-config=etcd.listen-metrics-urls=0.0.0.0 --extra-config=kubelet.authentication-token-webhook=true --extra-config=kubelet.authorization-mode=Webhook
+minikube addons enable csi-hostpath-driver
+minikube addons enable volumesnapshots
+minikube addons disable storage-provisioner
+minikube addons disable default-storageclass
 kubectl config set-context --current --namespace=all
+kubectl patch storageclass csi-hostpath-sc -p '{"metadata":{"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
 ```
 #### 4.1 Configure Kubernetes Scheduler, Etcd, Controller to be accessible from any address (if in Prometheus Targets appear as down)
 ##### For kubeEtcd, kubeScheduler, kubeControllerManager fix, for more explanations -> https://github.com/prometheus-community/helm-charts/issues/1966 ; https://github.com/prometheus-community/helm-charts/issues/1966#issuecomment-1093316897
