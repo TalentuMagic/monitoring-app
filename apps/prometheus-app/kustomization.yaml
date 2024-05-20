@@ -4,6 +4,7 @@ resources:
   - service.yaml
   - pvc.yaml
   - gitrepository.yaml
+  - prometheus-operator.yaml
   # - exporters.yaml
   # - scale.yaml
 
