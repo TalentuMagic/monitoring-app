@@ -10,7 +10,7 @@ spec:
   resources:
     requests:
       storage: 3Gi
-storageClassName: csi-hostpath-sc
+  storageClassName: csi-hostpath-sc
 ---
 # Grafana Data PVC
 apiVersion: v1
@@ -24,4 +24,4 @@ spec:
   resources:
     requests:
       storage: 2Gi
-storageClassName: csi-hostpath-sc
+  storageClassName: csi-hostpath-sc
