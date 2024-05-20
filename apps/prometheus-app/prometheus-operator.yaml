@@ -4,7 +4,7 @@ metadata:
   labels:
     k8s-app: kubelet
   name: kubelet
-  namespace: monitoring
+  namespace: prometheus
 spec:
   jobLabel: k8s-app
   endpoints:
