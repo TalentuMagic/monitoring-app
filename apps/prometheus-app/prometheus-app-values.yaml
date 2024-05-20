@@ -1435,10 +1435,11 @@ kubelet:
     ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api.md#relabelconfig
     ##
     ## metrics_path is required to match upstream rules and charts
-    relabelings:
-      - action: replace
-        sourceLabels: [__metrics_path__]
-        targetLabel: metrics_path
+    # relabelings:
+    #   - action: replace
+    #     sourceLabels: [__metrics_path__]
+    #     targetLabel: metrics_path
+    relabelings: []
     # - sourceLabels: [__meta_kubernetes_pod_node_name]
     #   separator: ;
     #   regex: ^(.*)$
