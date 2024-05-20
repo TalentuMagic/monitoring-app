@@ -92,9 +92,7 @@ brew install helm
 brew install k9s
 brew install kubernetes-cli
 brew install minikube
-minikube start
-kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
-minikube addons enable metrics-server
+minikube start --bootstrapper=kubeadm --extra-config=scheduler.bind-address=0.0.0.0 --extra-config=controller-manager.bind-address=0.0.0.0 --extra-config=etcd.listen-metrics-urls=0.0.0.0 --extra-config=kubelet.authentication-token-webhook=true --extra-config=kubelet.authorization-mode=Webhook
 kubectl config set-context --current --namespace=all
 ```
 #### 4.1 Configure Kubernetes Scheduler, Etcd, Controller to be accessible from any address (if in Prometheus Targets appear as down)
