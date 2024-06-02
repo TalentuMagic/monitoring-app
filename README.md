@@ -182,10 +182,100 @@ Install NGINX
 ```bash
 sudo apt install nginx
 ```
+Configure Default NGINX server file to forward traffic to SSL/TLS encrypted endpoints
+```nginx
+# when accessing from HTTP
+server {
+    listen 80;
+    server_name 10.9.0.164;
+    server_tokens off;
+
+    location / {
+        return 301 https://$host;
+    }
+
+    location = /grafana {
+        return 301 https://$host:3000$request_uri;
+    }
+
+    location = /prometheus {
+        return 301 https://$server_name:9090;
+    }
+    location = /alertmanager {
+        return 301 https://$server_name:9093;
+    }
+}
+# when accessing from HTTPS
+server {
+    listen 443 ssl http2;
+    server_name 10.9.0.164;
+    server_tokens off;
+
+    include snippets/self-signed.conf;
+    include snippets/ssl-params.conf;
+
+    location / {
+        deny all;
+    }
+
+    location = /grafana {
+        return 301 https://$host:3000$request_uri;
+    }
+
+    location = /prometheus {
+        return 301 https://$server_name:9090;
+    }
+    location = /alertmanager {
+        return 301 https://$server_name:9093;
+    }
+}
+```
+Configure the self-signed certificate for TLS encryption (https://www.digitalocean.com/community/tutorials/how-to-create-a-self-signed-ssl-certificate-for-nginx-in-ubuntu-16-04)
+```bash
+sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/nginx-selfsigned.key -out /etc/ssl/certs/nginx-selfsigned.crt
+sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
+sudo nano /etc/nginx/snippets/self-signed.conf
+```
+Add the following lines to the file
+```nginx
+ssl_certificate /etc/ssl/certs/nginx-selfsigned.crt;
+ssl_certificate_key /etc/ssl/private/nginx-selfsigned.key;
+```
+Create the config snippet with Strong Encryption Settings
+```bash
+sudo nano /etc/nginx/snippets/ssl-params.conf
+```
+```nginx
+# from https://cipherli.st/
+# and https://raymii.org/s/tutorials/Strong_SSL_Security_On_nginx.html
+
+ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+ssl_prefer_server_ciphers on;
+ssl_ciphers "EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH";
+ssl_ecdh_curve secp384r1;
+ssl_session_cache shared:SSL:10m;
+ssl_session_tickets off;
+ssl_stapling on;
+ssl_stapling_verify on;
+resolver 8.8.8.8 8.8.4.4 valid=300s;
+resolver_timeout 5s;
+# Disable preloading HSTS for now.  You can use the commented out header line that includes
+# the "preload" directive if you understand the implications.
+#add_header Strict-Transport-Security "max-age=63072000; includeSubdomains; preload";
+add_header Strict-Transport-Security "max-age=63072000; includeSubdomains";
+add_header X-Frame-Options DENY;
+add_header X-Content-Type-Options nosniff;
+
+ssl_dhparam /etc/ssl/certs/dhparam.pem;
+```
 Configure NGINX server for Grafana pod at the path using the following command `sudo nano /etc/nginx/sites-available/grafana` and the configuration below:
 ```nginx
 server {
-    listen 3000;
+    listen 3000 ssl http2;
+    include snippets/self-signed.conf;
+    include snippets/ssl-params.conf;
+
+    server_tokens off;
 
     location / {
         proxy_set_header Host 192.168.49.2:30443;
@@ -199,7 +289,11 @@ Do the same for Prometheus `sudo nano /etc/nginx/sites-available/prometheus`
 ```nginx
 # Prometheus Server
 server {
-    listen 9090;
+    listen 9090 ssl http2;
+    include snippets/self-signed.conf;
+    include snippets/ssl-params.conf;
+
+    server_tokens off;
 
     location / {
         proxy_set_header Host 192.168.49.2:30090;
@@ -209,7 +303,11 @@ server {
 }
 # Prometheus AlertManager
 server {
-    listen 9093;
+    listen 9093 ssl http2;
+    include snippets/self-signed.conf;
+    include snippets/ssl-params.conf;
+
+    server_tokens off;
 
     location / {
         proxy_set_header Host 192.168.49.2:30903;
