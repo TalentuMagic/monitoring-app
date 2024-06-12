@@ -376,116 +376,245 @@ Restart Docker service
 sudo systemctl restart docker
 ```
 
-## 3. Install MySQL, Install & Configure MySQL Exporter to scrape data
-### 3.1 Create the following directories
-```bash
-mkdir containers archives exporters
+## 3. Install Blackbox Exporter & Configure it to scrape data
+### 3.1 Create the `compose.yaml` file for Blackbox Exporter
+```yaml
+services:
+  blackbox-exporter:
+    image: prom/blackbox-exporter:latest
+    volumes:
+      - ./blackbox.yaml:/etc/blackbox_exporter/config.yml
+    command:
+      - '--config.file=/etc/blackbox_exporter/config.yml'
+    ports:
+      - 9115:9115
+    restart: unless-stopped
 ```
-### 3.2 Pull MySQL Exporter archive & Extract it (https://github.com/prometheus/mysqld_exporter/releases/)
-```bash
-wget -P ~/archives/ https://github.com/prometheus/mysqld_exporter/releases/download/v0.15.1/mysqld_exporter-0.15.1.linux-amd64.tar.gz
-tar xvfz ~/archives/mysqld_exporter-*.linux-amd64.tar.gz
-mv ~/archives/mysqld_exporter-0.15.1.linux-amd64/ ~/exporters
+### 3.2 Create the configuration file `blackbox.yaml` for Blackbox Exporter
+```yaml
+modules:
+  http_2xx:
+    prober: http
+    timeout: 5s
+    http:
+      valid_http_versions: [HTTP/1.1, HTTP/2]
+      method: GET
+      fail_if_ssl: false
+  http_probe:
+    prober: http
+    timeout: 5s
+    http:
+      method: GET
+      valid_http_versions: [HTTP/1.1, HTTP/2]
+      fail_if_ssl: false
+  post_probe:
+    prober: http
+    timeout: 5s
+    http:
+      method: POST
+      valid_http_versions: [HTTP/1.1, HTTP/2]
+      fail_if_ssl: false
+  put_probe:
+    prober: http
+    timeout: 5s
+    http:
+      method: PUT
+      valid_http_versions: [HTTP/1.1, HTTP/2]
+      fail_if_ssl: false
+  delete_probe:
+    prober: http
+    timeout: 5s
+    http:
+      method: DELETE
+      valid_http_versions: [HTTP/1.1, HTTP/2]
+      fail_if_ssl: false
+  tcp_probe:
+    prober: tcp
+    timeout: 5s
 ```
-### 3.3 Create the config file for the MySQL Exporter & Run it
-```bash
-nano ~/exporters/mysqld_exporter-0.15.1.linux-amd64/.my.cnf
-```
-```config
-[client]
-user=exporter
-password=admin
-```
-Save and close the file
-### 3.4 Create the Docker compose file for the MySQL DB & Run it
-```bash
-cd ~/containers
-mkdir mysql
-cd mysql/
-nano compose.yaml
-```
+### Save the files and exit; Run `docker-compose up -d` to start the Blackbox Exporter container in detached-mode
+
+## 4. Install MySQL, Install & Configure MySQL Exporter to scrape data
+### 4.1 Create the `compose.yaml` file for the MySQL DB and MySQL Exporter
 ```yaml
 services:
   db:
     image: mysql
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: rootadmin
+      MYSQL_ROOT_PASSWORD: example
       MYSQL_DATABASE: clientDB
       MYSQL_USER: user1
       MYSQL_PASSWORD: admin
     ports:
       - 3306:3306
     volumes:
-      - db-data:/var/lib/mysql
-volumes:
-  db-data:
-```
-Save the file and exit
-Run `docker-compose up -d` to start your MySQL DB container in detached-mode
+      - mysql-data:/var/lib/mysql
+      - ./exporter.sql:/docker-entrypoint-initdb.d/exporter.sql
 
-### 3.5 Create the "exporter" user for data scraping
-Open MySQL container shell
-```bash
-docker container ls
+  mysql-exporter:
+    image: prom/mysqld-exporter
+    command:
+      - "--config.my-cnf=/etc/mysql/mysql.conf.d/my.cnf"
+      - '--collect.info_schema.innodb_metrics'
+      - '--collect.auto_increment.columns'
+      - '--collect.info_schema.processlist'
+      - '--collect.binlog_size'
+      - '--collect.info_schema.tablestats'
+      - '--collect.global_variables'
+      - '--collect.info_schema.query_response_time'
+      - '--collect.info_schema.userstats'
+      - '--collect.info_schema.tables'
+      - '--collect.perf_schema.tablelocks'
+      - '--collect.perf_schema.file_events'
+      - '--collect.perf_schema.eventswaits'
+      - '--collect.perf_schema.indexiowaits'
+      - '--collect.perf_schema.tableiowaits'
+      - '--collect.slave_status'
+    volumes:
+      - ./my.cnf:/etc/mysql/mysql.conf.d/my.cnf:ro
+    ports:
+      - 9104:9104
+    depends_on:
+      - db
+
+volumes:
+  mysql-data:
 ```
-Copy the container hash
-Run the following command to enter the shell of the container
-```bash
-docker exec -it <container_hash> /bin/bash
-```
-When inside the container shell, run the following commands
-```bash
-mysql -u root -p
-```
-Enter the password you set earlier (e.g. rootadmin)
-Run the following SQL commands
+### 4.2 Create a `exporter.sql` script that will be executed when the MySQL DB container starts
+This script creates the `exporter` user that will do periodical queries on the DB as the MySQL Exporter requires
 ```sql
-CREATE USER 'exporter'@'localhost' IDENTIFIED BY 'admin' WITH MAX_USER_CONNECTIONS 3;
-GRANT PROCESS, REPLICATION CLIENT, SELECT ON *.* TO 'exporter'@'localhost';
+CREATE USER 'exporter'@'%' IDENTIFIED BY 'exporteradmin';
+GRANT PROCESS, REPLICATION CLIENT, SELECT ON *.* TO 'exporter'@'%';
 FLUSH PRIVILEGES;
 ```
-### 3.6 Run the MySQL Exporter
+### 4.3 Create a `my.cnf` configuration file for the MySQL Exporter
+This file configures MySQL Exporter with the credentials for the user on the MySQL DB that will do queries and send data back to the exporter
+```conf
+[client]
+user=exporter
+password=exporteradmin
+host=db
+```
+### Save the files and exit; Run `docker-compose up -d` to start your MySQL DB and MySQL Exporter containers in detached-mode
 
-#### 3.6.1 Run the MySQL Exporter in the background
-```bash
-cd
-./exporters/mysqld_exporter-0.15.1.linux-amd64/mysqld_exporter &
+## 5. Node Exporter
+### 5.1 Create the `compose.yaml` file for Node Exporter
+```yaml
+services:
+  node-exporter:
+    image: prom/node-exporter:latest
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - '--path.rootfs=/rootfs'
+      - '--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|host|etc)($$|/)'
+      - '--collector.systemd'
+    ports:
+      - 9100:9100
+    restart: unless-stopped
 ```
-You can use CTRL+C to exit the shell - the script will still run in the background
-To kill the process, run the following commands
-```bash
-pgrep mysqld_exporter
-kill -9 <PID>
-```
-#### 3.6.2 Run the MySQL Exporter as a service
-Create the service config
-```bash
-sudo nano /etc/systemd/system/mysqld-exporter
-```
-Paste the following into the config file & Save it
-```config
-[Unit]
-Description=MySQL Exporter Service - scrapes MySQL DB data
+### Save the file and exit; Run `docker-compose up -d` to start your Node Exporter container in detached-mode
 
-[Service]
-User=ubuntu
-WorkingDirectory=~/exporters/mysqld_exporter-0.15.1.linux-amd64/
-ExecStart=mysqld_exporter
-# optional items below
-Restart=always
-RestartSec=3
+## 6. Node Exporter
+### 6.1 Create the `compose.yaml` file for the NodeJS application, the NGINX server, and the NGINX Exporter
+```yaml
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - node_app
+    restart: unless-stopped
+    networks:
+      nginx_exporter_net:
 
-[Install]
-WantedBy=multi-user.target
+  node_app:
+    image: node:latest
+    container_name: node_app
+    command: node app.js
+    volumes:
+      - ./nodejs-app/:/app
+    working_dir: /app
+    expose:
+      - 3000
+    restart: unless-stopped
+    networks:
+      nginx_exporter_net:
+
+  nginx_prometheus_exporter:
+    image: nginx/nginx-prometheus-exporter:latest
+    container_name: nginx_prometheus_exporter
+    command:
+      - '--nginx.scrape-uri=http://nginx:80/stub_status'
+    ports:
+      - 9113:9113
+    depends_on:
+      - nginx
+    restart: unless-stopped
+    networks:
+      nginx_exporter_net:
+        ipv4_address: 172.28.1.4
+networks:
+  nginx_exporter_net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.28.0.0/16
 ```
-Reload daemons
-```bash
-sudo systemctl daemon-reload
+### 6.2 Create the NGINX Configuration file `nginx.conf`
+This configures the NGINX server to act as a Load Balancer
+```conf
+worker_processes 2;
+
+events { worker_connections 1024; }
+
+http {
+    server_tokens off;
+
+    upstream nodejs {
+        server node_app:3000;
+    }
+
+    server {
+        listen 80;
+
+        location / {
+            proxy_pass http://nodejs;
+        }
+
+        location /stub_status {
+            stub_status;
+            allow 172.28.1.4;
+            deny all;
+        }
+    }
+}
 ```
-Enable (autorun at OS startup) and start the service
-```bash
-sudo systemctl start mysqld-exporter
-sudo systemctl enable --now mysqld-exporter
-sudo systemctl status mysqld-exporter
+### 6.3 Create the NodeJS application in its separate folder `nodejs-app/app.js`
+```js
+const http = require('http');
+
+const hostname = '0.0.0.0';
+const port = 3000;
+
+const server = http.createServer((req, res) => {
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'text/plain');
+  res.end('Hello World!\n');
+});
+
+server.listen(port, hostname, () => {
+  console.log(`Server running at http://${hostname}:${port}/`);
+});
 ```
+### Save the file and exit; Run `docker-compose up -d` to start your NodeJS application, NGINX LoadBalancer, and NGINX Exporter containers in detached-mode
